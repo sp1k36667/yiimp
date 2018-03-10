@@ -11,7 +11,7 @@ build stratum server binary
 
 install web server deps
 ---
-> sudo apt install php php-curl php-mysql php-memcache mysql-server nginx memcached screen
+> sudo apt install php php-curl php-mysql php-memcache mysql-server nginx memcached screen sendmail
 
 follow instructions for configuring nginx, then...
 ---
@@ -51,6 +51,7 @@ then configure the web app
 > sudo mv /var/web/serverconfig.sample.php /var/web/serverconfig.php
 > sudo vim /var/web/serverconfig.php
 > ... need to change YAAMP_DBNAME, YAAMP_DBUSER, and YAAMP_DBPASSWORD
+> ... also set YAAMP_RENTAL to false, YAAMP_SITE_NAME to preferred name, and configure YAAMP_ADMIN_EMAIL and YAAMP_ADMIN_IP
 
 make sure everything works
 ---
