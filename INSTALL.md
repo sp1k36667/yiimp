@@ -34,9 +34,7 @@ set up stratum folder
 
 setup web folder
 ---
-> mkdir /var/web  
-> mkdir /etc/yiimp/  
-> sudo cp web/keys.sample.php /etc/yiimp/keys.php  
+> sudo cp web/keys.sample.php web/keys.php  
 
 then configure the file
 ---
@@ -44,12 +42,12 @@ then configure the file
 
 copy over
 ---
-> sudo cp -rf web/ /var/web
+> sudo cp -rf web/ /var/www/web
 
 then configure the web app
 ---
-> sudo mv /var/web/serverconfig.sample.php /var/web/serverconfig.php  
-> sudo vim /var/web/serverconfig.php  
+> sudo mv /var/www/web/serverconfig.sample.php /var/www/web/serverconfig.php  
+> sudo vim /var/www/web/serverconfig.php  
 > ... need to change YAAMP_DBNAME, YAAMP_DBUSER, and YAAMP_DBPASSWORD  
 
 make sure everything works
@@ -59,10 +57,40 @@ make sure everything works
 
 run scripts in screen
 ---
-> cd /var/web  
+> cd /var/www/web  
 > screen  
 > ./main.sh  
 > ... switch screen ...  
 > ./loop2.sh  
 > ... switch screen ...  
 > ./block.sh  
+
+## For docker users
+
+copy and change docker env
+---
+> cd yiimplara
+> cp env-example .env
+> vi .env (change mysql part)
+
+run docker
+---
+> cd yiimplara
+> make up
+
+go into php-fpm container
+---
+> make in
+
+load sql in container
+---
+> cd /var/www/sql
+> ./load-sql.sh
+
+open browser at http://localhost:2080
+---
+> open http://localhost:2080
+
+view debug.log at /var/www/web/log/debug.log
+---
+> tail -f web/log/debug.log

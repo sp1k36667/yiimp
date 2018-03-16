@@ -1,3 +1,4 @@
+*.so.0
 *.o
 *.a
 stratum/stratum
@@ -18,3 +19,5 @@ web/serverconfig.php
 web/assets/
 *.rej
 *.orig
+.DS_Store
+.vscode/

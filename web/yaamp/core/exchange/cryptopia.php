@@ -32,7 +32,7 @@ function cryptopia_api_query($method, $params='')
 
 function cryptopia_api_user($method, $params=NULL)
 {
-	require_once('/etc/yiimp/keys.php');
+	require_once('/var/www/web/keys.php');
 	if (!defined('EXCH_CRYPTOPIA_SECRET')) define('EXCH_CRYPTOPIA_SECRET', '');
 
 	if (empty(EXCH_CRYPTOPIA_KEY) || empty(EXCH_CRYPTOPIA_SECRET)) return false;

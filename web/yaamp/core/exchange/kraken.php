@@ -241,7 +241,7 @@ function kraken_api_query($method, $params='')
 
 function kraken_api_user($method, $params='')
 {
-	require_once('/etc/yiimp/keys.php');
+	require_once('/var/www/web/keys.php');
 	if (!defined('EXCH_KRAKEN_SECRET')) return false;
 
 	$apikey = EXCH_KRAKEN_KEY; // your API-key

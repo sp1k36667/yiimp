@@ -26,7 +26,7 @@ function bter_api_query($method, $params='')
 
 function bter_api_user($method, $params=array())
 {
-	require_once('/etc/yiimp/keys.php');
+	require_once('/var/www/web/keys.php');
 	if (!defined('EXCH_BTER_SECRET')) return false;
 
 	$apikey = EXCH_BTER_KEY; // your API-key

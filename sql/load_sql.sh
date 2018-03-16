@@ -1,5 +1,13 @@
 #!/bin/bash
 
+echo -n Host:
+read host
+echo -n Port:
+read port
+echo -n DBName:
+read dbname
+echo -n User:
+read user
 echo -n Password: 
 read -s password
 #arr=( $(find *.sql -type f) )
@@ -25,5 +33,5 @@ sql=(
 )
 for f in ${sql[@]}
 do
-  mysql -uyiimp -p$password yiimp < $f
+  mysql -h$host -u$user -P$port -p$password $dbname < $f
 done

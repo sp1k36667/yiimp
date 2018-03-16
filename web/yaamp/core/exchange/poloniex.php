@@ -10,7 +10,7 @@ class poloniex
 		protected $public_url = "https://poloniex.com/public";
 
 		public function __construct() {
-			require_once('/etc/yiimp/keys.php');
+			require_once('/var/www/web/keys.php');
 			if (defined('EXCH_POLONIEX_SECRET')) {
 				$this->api_key = EXCH_POLONIEX_KEY;
 				$this->api_secret = EXCH_POLONIEX_SECRET;

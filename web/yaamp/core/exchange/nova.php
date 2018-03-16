@@ -19,7 +19,7 @@ function nova_api_query($method)
 
 function nova_api_user($method, $params=array())
 {
-	require_once('/etc/yiimp/keys.php');
+	require_once('/var/www/web/keys.php');
 	if (!defined('EXCH_NOVA_SECRET')) define('EXCH_NOVA_SECRET', '');
 
 	if (empty(EXCH_NOVA_KEY) || empty(EXCH_NOVA_SECRET)) return false;

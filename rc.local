@@ -9,7 +9,7 @@
 # the $HOME var is set to your admin user
 
 LOG_DIR=/work/yiimp/log
-WEB_DIR=/var/web
+WEB_DIR=/var/www/web
 STRATUM_DIR=/var/stratum
 
 screen -dmS main $WEB_DIR/main.sh

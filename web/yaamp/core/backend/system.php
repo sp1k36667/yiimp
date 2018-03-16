@@ -3,7 +3,7 @@
 function BackendDoBackup()
 {
 	$d = date('Y-m-d-H', time());
-	$filename = "/root/backup/yaamp-$d.sql";
+	$filename = "/var/www/sql/yaamp-$d.sql";
 
 	if (is_readable("/usr/bin/xz")) {
 		$ziptool = "xz --threads=4"; $ext = ".xz";
@@ -11,7 +11,7 @@ function BackendDoBackup()
 		$ziptool = "gzip"; $ext = ".gz";
 	}
 
-	include_once("/etc/yiimp/keys.php");
+	include_once("/var/www/web/keys.php");
 
 	$host = YAAMP_DBHOST;
 	$db   = YAAMP_DBNAME;

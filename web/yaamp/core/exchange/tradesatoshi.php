@@ -29,7 +29,7 @@ function tradesatoshi_api_query($method, $params='')
 
 function tradesatoshi_api_user($method, $params=NULL)
 {
-	require_once('/etc/yiimp/keys.php');
+	require_once('/var/www/web/keys.php');
 	// todo
 }
 

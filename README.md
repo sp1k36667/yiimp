@@ -55,12 +55,12 @@ Your database need at least 2 users, one for the web site (php) and one for the 
 
 The recommended install folder for the stratum engine is /var/stratum. Copy all the .conf files, run.sh, the stratum binary and the blocknotify binary to this folder. 
 
-Some scripts are expecting the web folder to be /var/web. You can use directory symlinks...
+Some scripts are expecting the web folder to be /var/www/web. You can use directory symlinks...
 
 
 Add your exchange API public and secret keys in these two separated files:
 
-	/etc/yiimp/keys.php - fixed path in code
+	/var/www/web/keys.php - fixed path in code
 	web/serverconfig.php - use sample as base...
 
 You can find sample config files in web/serverconfig.sample.php and web/keys.sample.php

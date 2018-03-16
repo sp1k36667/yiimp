@@ -4,7 +4,7 @@
 
 function bleutrade_api_query($method, $params='')
 {
-	require_once('/etc/yiimp/keys.php');
+	require_once('/var/www/web/keys.php');
 	if (!defined('EXCH_BLEUTRADE_SECRET')) define('EXCH_BLEUTRADE_SECRET', '');
 
 	// optional secret key

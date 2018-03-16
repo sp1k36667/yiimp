@@ -28,7 +28,7 @@ function binance_api_query($method)
 function binance_api_user($method, $params=NULL)
 {
 	$exchange = 'binance';
-	require_once('/etc/yiimp/keys.php');
+	require_once('/var/www/web/keys.php');
 	if (!defined('EXCH_BINANCE_SECRET')) define('EXCH_BINANCE_SECRET', '');
 
 	if (empty(EXCH_BINANCE_KEY) || empty(EXCH_BINANCE_SECRET)) return false;
