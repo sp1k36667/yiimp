@@ -134,7 +134,7 @@ function BackendCleanDatabase()
 {
 	marketHistoryPrune();
 
-	$delay = time() - 60*24*60*60;
+	$delay = time() - 360*24*60*60;
 	dborun("DELETE from blocks where time<$delay");
 	dborun("delete from hashstats where time<$delay");
 	dborun("delete from payouts where time<$delay");

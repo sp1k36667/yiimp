@@ -21,3 +21,4 @@ web/assets/
 *.orig
 .DS_Store
 .vscode/
+*.xz

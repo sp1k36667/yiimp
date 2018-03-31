@@ -4,6 +4,8 @@ function yaamp_get_algos()
 {
 	/* Toggle Site Algos Here */
 	return array(
+		'blake2b',
+		/*
 		'sha256',
 		'sha256t',
 		'scrypt',
@@ -57,7 +59,7 @@ function yaamp_get_algos()
 		'yescrypt',
 		'yescryptR16',
 		'whirlpool',
-		'zr5',
+		'zr5',*/
 	);
 }
 
@@ -142,6 +144,7 @@ function getAlgoColors($algo)
 		'argon2'	=> '#e0d0e0',
 		'bastion'	=> '#e0b0b0',
 		'blake'		=> '#f0f0f0',
+		'blake2b'	=> '#f0f0f0',
 		'blakecoin'	=> '#f0f0f0',
 		'groestl'	=> '#d0a0a0',
 		'jha'		=> '#a0d0c0',
