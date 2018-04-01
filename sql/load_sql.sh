@@ -1,15 +1,10 @@
 #!/bin/bash
 
-echo -n Host:
-read host
-echo -n Port:
-read port
-echo -n DBName:
-read dbname
-echo -n User:
-read user
-echo -n Password: 
-read -s password
+read -e -p "Host: " -i "127.0.0.1" host
+read -e -p "Port: " -i "3306" port
+read -e -p "DB Name: " dbname
+read -e -p "User: " user
+read -e -s -p "Password: " password
 #arr=( $(find *.sql -type f) )
 sql=(
   "2016-04-03-yaamp.sql"
