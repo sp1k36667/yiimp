@@ -48,7 +48,14 @@ restart nginx and verify that it's running
 > sudo service nginx restart  
 > sudo service nginx status  
 
-set up sql accounts for users php and yiimp, then...
+set up sql accounts for users php and yiimp
+---
+	mysql> CREATE USER 'php'@'localhost' IDENTIFIED BY 'password';
+	mysql> GRANT ALL PRIVILEGES ON *.* TO 'php'@'localhost' WITH GRANT OPTION;
+	mysql> CREATE USER 'yiimp'@'localhost' IDENTIFIED BY 'password';
+	mysql> GRANT ALL PRIVILEGES ON *.* TO 'yiimp'@'localhost' WITH GRANT OPTION;
+
+load initial sql data
 ---
 > cd sql  
 > ./load_sql.sh  
