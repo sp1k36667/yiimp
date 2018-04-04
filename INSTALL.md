@@ -9,9 +9,9 @@ build stratum server binary
 > make  
 > cd ..  
 
-install web server deps
+install stratum and webserver dependencies
 ---
-> sudo apt install php php-curl php-mysql php-memcache mysql-server nginx memcached screen
+> sudo apt install php php-curl libcurl4-openssl-dev php-mysql php-memcache mysql-server libmysqlclient-dev nginx memcached screen libldap2-dev libidn11-dev librtmp-dev libkrb5-dev
 
 set up nginx
 ---
