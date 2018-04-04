@@ -48,6 +48,10 @@ restart nginx and verify that it's running
 > sudo service nginx restart  
 > sudo service nginx status  
 
+set up sql database
+---
+	mysql>  CREATE DATABASE pool;
+
 set up sql accounts for users php and yiimp
 ---
 	mysql> CREATE USER 'php'@'localhost' IDENTIFIED BY 'password';
