@@ -76,15 +76,15 @@ set up stratum folder
 
 setup web folder
 ---
-> sudo cp web/keys.sample.php web/keys.php  
-
-then configure the file
----
-> vim web/keys.php
+> sudo cp web/keys.sample.php /var/www/web/keys.php
 
 copy over
 ---
 > sudo cp -rf web/ /var/www/web
+
+then configure the keys file
+---
+> sudo vim /var/www/web/keys.php
 
 then configure the web app
 ---
