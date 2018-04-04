@@ -80,7 +80,7 @@ setup web folder
 
 then configure the file
 ---
-> sudo vim /etc/yiim/keys.php
+> vim web/keys.php
 
 copy over
 ---
