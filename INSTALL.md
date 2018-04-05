@@ -11,7 +11,7 @@ build stratum server binary
 
 install stratum and webserver dependencies
 ---
-> sudo apt install php php-curl libcurl4-openssl-dev php-mysql php-memcache mysql-server libmysqlclient-dev nginx memcached screen libldap2-dev libidn11-dev librtmp-dev libkrb5-dev
+> sudo apt install php php-curl libcurl4-openssl-dev php-mysql php-memcache mysql-server libmysqlclient-dev nginx memcached screen libldap2-dev libidn11-dev librtmp-dev libkrb5-dev sendmail
 
 set up nginx
 ---
@@ -81,6 +81,10 @@ setup web folder
 copy over
 ---
 > sudo cp -rf web/ /var/www/web
+
+create sql folder
+---
+> mkdir /var/www/sql
 
 then configure the keys file
 ---
