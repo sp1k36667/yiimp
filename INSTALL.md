@@ -18,29 +18,27 @@ set up nginx
 First, make sure there you have no configs already specified as "default_server" or "server_name _".
 Then, create /etc/nginx/sites-enabled/pool.conf:
 
-	server {
-		listen 80 default_server;
-		listen [::]:80 default_server;
-
-		root /var/www/web;
-		index index.html index.htm index.nginx-debian.html;
-
-		server_name _;
-
-		location / {
-		    try_files $uri @rewrite;
-		}
-
-		location @rewrite {
-		    rewrite ^/(.*)$ /index.php?r=$1;
-		}
-
-		location ~ \.php$ {
-		    fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-		    fastcgi_index index.php;
-		    include fastcgi_params;
-		}
-
+	server {                                                                                              
+	        listen 80 default_server;
+	        listen [::]:80 default_server;                                                                
+	                                                                                                      
+	        root /var/www/web;
+	        index index.html index.htm;                                                                   
+	
+	        server_name _;
+	
+	        location / {                                                                                  
+	            try_files $uri @rewrite;                                                                  
+	        }                                                                                             
+	
+	        location @rewrite {                                                                           
+	            rewrite ^/(.*)$ /index.php?r=$1;                                                          
+	        }
+	
+	        location ~ \.php$ {
+	            include snippets/fastcgi-php.conf;                                                        
+	            fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;                                           
+	        }
 	}
 
 restart nginx and verify that it's running
