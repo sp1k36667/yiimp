@@ -36,7 +36,7 @@ Then, create /etc/nginx/sites-enabled/pool.conf:
 		}
 
 		location ~ \.php$ {
-		    fastcgi_pass unix:/var/run/php7-fpm.sock;
+		    fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
 		    fastcgi_index index.php;
 		    include fastcgi_params;
 		}
