@@ -119,11 +119,14 @@ Now your webserver should be running! Check it in your web browser
 
 set up Go (must be at least 1.10)
 ---
-> apt install golang-1.10
-add the following to your ~/.bashrc
+> apt install golang-1.10  
+
+add the following to your ~/.bashrc  
+
 	export GOPATH=$HOME/.go
 	export PATH=$PATH:/usr/lib/go-1.10/bin
-> source ~/.bashrc
+
+> source ~/.bashrc  
 
 # For docker users
 
