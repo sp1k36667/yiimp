@@ -11,6 +11,8 @@ define('YAAMP_DBNAME', 'yaamp');
 define('YAAMP_DBUSER', 'root');
 define('YAAMP_DBPASSWORD', 'password');
 
+define('YAAMP_MEMCACHEHOST', '127.0.0.1');
+
 define('YAAMP_PRODUCTION', true);
 define('YAAMP_RENTAL', true);
 define('YAAMP_LIMIT_ESTIMATE', false);
