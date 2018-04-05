@@ -1,3 +1,7 @@
+# Ubuntu 16.04 Installation
+
+## Get the webserver up and running
+
 build stratum server binary
 ---
 > cd stratum/iniparser  
@@ -109,7 +113,19 @@ run scripts in screen
 > ... switch screen ...  
 > ./block.sh  
 
-## For docker users
+Now your webserver should be running! Check it in your web browser
+
+## Get the stratum server up and running
+
+set up Go (must be at least 1.10)
+---
+> apt install golang-1.10
+add the following to your ~/.bashrc
+	export GOPATH=$HOME/.go
+	export PATH=$PATH:/usr/lib/go-1.10/bin
+> source ~/.bashrc
+
+# For docker users
 
 copy and change docker env
 ---
