@@ -128,6 +128,14 @@ add the following to your ~/.bashrc
 
 > source ~/.bashrc  
 
+set up Sia stratum server
+---
+> go get -u github.com/ToastPool/Sia/...
+> mv ~/.go/src/github.com/ToastPool/Sia ~/.go/src/github.com/NebulousLabs/Sia
+> cd ~/.go/src/github.com/NebulousLabs/Sia
+> make dependencies
+> make release
+
 # For docker users
 
 copy and change docker env
