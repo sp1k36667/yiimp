@@ -124,7 +124,7 @@ set up Go (must be at least 1.10)
 add the following to your ~/.bashrc  
 
 	export GOPATH=$HOME/.go
-	export PATH=$PATH:/usr/lib/go-1.10/bin
+	export PATH=$PATH:/usr/lib/go-1.10/bin:$GOPATH/bin
 
 > source ~/.bashrc  
 
