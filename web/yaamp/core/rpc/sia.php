@@ -33,7 +33,7 @@ class SiaRPC
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_FOLLOWLOCATION => true,
 			CURLOPT_MAXREDIRS      => 10,
-			CURLOPT_POST           => true,
+			CURLOPT_POST           => false,
 			CURLOPT_HTTPHEADER     => array(
 				'Content-Type: application/json',
 				'User-Agent: Sia-Agent',
@@ -57,6 +57,26 @@ class SiaRPC
 
 		if (!empty($curl_error)) {
 			$this->error = $curl_error;
+		}
+
+		if ($this->status != 200) {
+			// If didn't return a nice error message, we need to make our own
+			switch ($this->status) {
+				case 400:
+					$this->error = 'HTTP_BAD_REQUEST';
+					break;
+				case 401:
+					$this->error = 'HTTP_UNAUTHORIZED';
+					break;
+				case 403:
+					$this->error = 'HTTP_FORBIDDEN';
+					break;
+				case 404:
+					$this->error = 'HTTP_NOT_FOUND';
+					break;
+				case 405:
+					$this->error = 'HTTP_METHOD_NOT_ALLOWED';
+			}
 		}
 
 		return $this->response;
