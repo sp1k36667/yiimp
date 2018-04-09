@@ -24,10 +24,9 @@ class SiaRPC
 		$this->password = $password;
 	}
 
-	function __call($method, $params=array())
+	function rpcget($url, $params=array())
 	{
-		$url = 'wallet/address'
-		$curl = curl_init("{$this->proto}://{$this->host}:{$this->port}/{$this->url}");
+		$curl = curl_init("{$this->proto}://{$this->host}:{$this->port}{$url}");
 		$options = array(
 			CURLOPT_CONNECTTIMEOUT => 10,
 			CURLOPT_TIMEOUT        => 30,
@@ -35,11 +34,14 @@ class SiaRPC
 			CURLOPT_FOLLOWLOCATION => true,
 			CURLOPT_MAXREDIRS      => 10,
 			CURLOPT_POST           => true,
-			CURLOPT_HTTPHEADER     => array('Content-Type: application/json'),
+			CURLOPT_HTTPHEADER     => array(
+				'Content-Type: application/json',
+				'User-Agent: Sia-Agent',
+			),
 		);
-		curl_set_opt_array($curl, $options);
+		curl_setopt_array($curl, $options);
 		if (!empty($this->password)) {
-			curl_setopt($curl, CURLOPT_USERPWD, $this->password)
+			curl_setopt($curl, CURLOPT_USERPWD, $this->password);
 		}
 		$this->raw_response = curl_exec($curl);
 
