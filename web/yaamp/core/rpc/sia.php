@@ -24,16 +24,14 @@ class SiaRPC
 		$this->password = $password;
 	}
 
-	function rpcget($url, $params=array())
+	function rpcrequest($curl)
 	{
-		$curl = curl_init("{$this->proto}://{$this->host}:{$this->port}{$url}");
 		$options = array(
 			CURLOPT_CONNECTTIMEOUT => 10,
 			CURLOPT_TIMEOUT        => 30,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_FOLLOWLOCATION => true,
 			CURLOPT_MAXREDIRS      => 10,
-			CURLOPT_POST           => false,
 			CURLOPT_HTTPHEADER     => array(
 				'Content-Type: application/json',
 				'User-Agent: Sia-Agent',
@@ -43,6 +41,7 @@ class SiaRPC
 		if (!empty($this->password)) {
 			curl_setopt($curl, CURLOPT_USERPWD, $this->password);
 		}
+
 		$this->raw_response = curl_exec($curl);
 
 		$this->response = json_decode($this->raw_response, TRUE);
@@ -80,5 +79,31 @@ class SiaRPC
 		}
 
 		return $this->response;
+	}
+
+	function rpcget($url, $params=array())
+	{
+		$url = "{$this->proto}://{$this->host}:{$this->port}{$url}";
+		if (!empty($params)) {
+			$url = "?ts=".time();
+			foreach ($params as $key => $val) {
+				$url .= '&'.urlencode($key).'='.urlencode($val);
+			}
+		}
+		$curl = curl_init($url);
+		curl_setopt($curl, CURLOPT_POST, false);
+		return $this->rpcrequest($curl);
+	}
+
+	function rpcpost($url, $params=array())
+	{
+		$curl = curl_init("{$this->proto}://{$this->host}:{$this->port}{$url}");
+		$pop = array_pop($params);
+		if (is_object($pop) || is_array($pop)) {
+			$params = (object) $pop;
+		}
+		curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($params));
+		curl_setopt($curl, CURLOPT_POST, true);
+		return $this->rpcrequest($curl);
 	}
 }
