@@ -84,6 +84,7 @@ class SiaRPC
 	function rpcget($url, $params=array())
 	{
 		$url = "{$this->proto}://{$this->host}:{$this->port}{$url}";
+		die("the url fetching: {$url}");
 		if (!empty($params)) {
 			$url = "?ts=".time();
 			foreach ($params as $key => $val) {
@@ -106,4 +107,5 @@ class SiaRPC
 		curl_setopt($curl, CURLOPT_POST, true);
 		return $this->rpcrequest($curl);
 	}
+
 }

@@ -90,7 +90,7 @@ function BackendBlockFind1($coinid = NULL)
 {
 	$sqlFilter = $coinid ? " AND coin_id=".intval($coinid) : '';
 
-//	debuglog(__METHOD__);
+	debuglog(__METHOD__);
 	$list = getdbolist('db_blocks', "category='new' $sqlFilter ORDER BY time");
 	foreach($list as $db_block)
 	{
@@ -105,8 +105,9 @@ function BackendBlockFind1($coinid = NULL)
 
 		$db_block->category = 'orphan';
 		$remote = new WalletRPC($coin);
-
+		debuglog("coin: {$coin->rpcencoding}, block hash: #{$db_block->blockhash}");
 		$block = $remote->getblock($db_block->blockhash);
+		debuglog("block is: #{$block}");
 		$block_age = time() - $db_block->time;
 		if($coin->rpcencoding == 'DCR' && $block_age < 2000) {
 			// DCR generated blocks need some time to be accepted by the network (gettransaction)
@@ -119,7 +120,7 @@ function BackendBlockFind1($coinid = NULL)
 		else if(!$block || !isset($block['tx']) || !isset($block['tx'][0]))
 		{
 			$db_block->amount = 0;
-			$db_block->save();
+			// $db_block->save();
 			debuglog("{$coin->symbol} orphan {$db_block->height} after ".(time() - $db_block->time)." seconds");
 			continue;
 		}
