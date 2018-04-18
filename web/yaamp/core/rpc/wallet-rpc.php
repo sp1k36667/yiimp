@@ -377,6 +377,17 @@ class WalletRPC {
 			}
 
 			return $res;
+		else if ($this->type == 'Siacoin')
+		{
+			switch ($method) {
+			// TODO
+			case 'getblock':
+				$hash = arraySafeVal($params, 0);
+				$block = $this->rpc->rpcget("/explorer/blocks/hash/#{$hash}");
+				$this->error = $this->rpc->error;
+				return $block;
+			}
+
 		}
 
 		// Bitcoin RPC

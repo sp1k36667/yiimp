@@ -19,6 +19,7 @@ function BackendBlockNew($coin, $db_block)
 
 	foreach($list as $item)
 	{
+		// generate a proportional earning record
 		$hash_power = $item['total'];
 		if(!$hash_power) continue;
 
@@ -40,6 +41,7 @@ function BackendBlockNew($coin, $db_block)
 		$earning->amount = $amount;
 		$earning->price = $coin->price;
 
+		// TODO what is the 'generate' category
 		if($db_block->category == 'generate')
 		{
 			$earning->mature_time = time();
@@ -57,6 +59,7 @@ function BackendBlockNew($coin, $db_block)
 		if (!$earning->save())
 			debuglog(__FUNCTION__.": Unable to insert earning!");
 
+		// record the user's last earning time
 		$user->last_earning = time();
 		$user->save();
 	}
@@ -66,6 +69,7 @@ function BackendBlockNew($coin, $db_block)
 	if(!YAAMP_ALLOW_EXCHANGE) // only one coin mined
 		$sqlCond .= " AND coinid = ".intval($coin->id);
 
+	// TODO wipe all shares older than 5 minutes, but why?
 	try {
 		dborun("DELETE FROM shares WHERE algo=:algo AND $sqlCond", array(':algo'=>$coin->algo));
 
