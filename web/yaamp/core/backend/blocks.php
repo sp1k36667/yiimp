@@ -105,10 +105,33 @@ function BackendBlockFind1($coinid = NULL)
 
 		$db_block->category = 'orphan';
 		$remote = new WalletRPC($coin);
-		debuglog("coin: {$coin->rpcencoding}, block hash: #{$db_block->blockhash}");
+
 		$block = $remote->getblock($db_block->blockhash);
-		debuglog("block is: #{$block}");
+		// debuglog("block is: {$block->blockhash}, parentid: {$block->parentid}");
 		$block_age = time() - $db_block->time;
+		if($coin->rpcencoding == 'SC') {
+			debuglog("rpc encoding: {$coin->rpcencoding}");
+			if (!$block) {
+				$db_block->amount = 0;
+				// $db_block->save();
+				debuglog("{$coin->symbol} orphan {$db_block->height} after ".(time() - $db_block->time)." seconds");
+
+				continue;
+			}
+			$db_block->txhash = $block->minerpayouts[0];
+			$db_block->category = 'immature';						//$tx['details'][0]['category'];
+			$db_block->amount = $tx['details'][0]['amount'];
+			$db_block->confirmations = $tx['confirmations'];
+			$db_block->price = $coin->price;
+
+			if (!$db_block->save())
+				debuglog(__FUNCTION__.": unable to insert block!");
+
+			if($db_block->category != 'orphan')
+				BackendBlockNew($coin, $db_block); // will drop shares
+			continue;
+		}
+
 		if($coin->rpcencoding == 'DCR' && $block_age < 2000) {
 			// DCR generated blocks need some time to be accepted by the network (gettransaction)
 			if (!$block) continue;
@@ -120,7 +143,7 @@ function BackendBlockFind1($coinid = NULL)
 		else if(!$block || !isset($block['tx']) || !isset($block['tx'][0]))
 		{
 			$db_block->amount = 0;
-			// $db_block->save();
+			$db_block->save();
 			debuglog("{$coin->symbol} orphan {$db_block->height} after ".(time() - $db_block->time)." seconds");
 			continue;
 		}

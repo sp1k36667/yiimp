@@ -42,6 +42,7 @@ class WalletRPC {
 			case 'SC':
 				$this->type = 'Siacoin';
 				$this->rpc = new SiaRPC($coin->rpchost, $coin->rpcport, $coin->rpcpasswd);
+				break;
 			default:
 				$this->type = 'Bitcoin';
 				$this->rpc = new Bitcoin($coin->rpcuser, $coin->rpcpasswd, $coin->rpchost, $coin->rpcport, $url);
@@ -382,12 +383,12 @@ class WalletRPC {
 		// Siacoin
 		else if ($this->type == 'Siacoin')
 		{
-			debuglog("in siacoin rpc");
 			switch ($method) {
 			// TODO
 			case 'getblock':
 				$hash = arraySafeVal($params, 0);
 				$block = $this->rpc->rpcget("/consensus/blocks?id={$hash}");
+				$block->blockhash = $hash;
 				$this->error = $this->rpc->error;
 				return $block;
 			}

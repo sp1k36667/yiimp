@@ -43,8 +43,7 @@ class SiaRPC
 		}
 
 		$this->raw_response = curl_exec($curl);
-
-		$this->response = json_decode($this->raw_response, TRUE);
+		$this->response = json_decode($this->raw_response);
 
 		// If the status is not 200, something is wrong
 		$this->status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -84,7 +83,6 @@ class SiaRPC
 	function rpcget($url, $params=array())
 	{
 		$url = "{$this->proto}://{$this->host}:{$this->port}{$url}";
-		die("the url fetching: {$url}");
 		if (!empty($params)) {
 			$url = "?ts=".time();
 			foreach ($params as $key => $val) {
