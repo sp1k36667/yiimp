@@ -385,6 +385,11 @@ class WalletRPC {
 		{
 			switch ($method) {
 			// TODO
+			case 'getinfo':
+				$info = $this->rpc->rpcget('/consensus');
+				$info["blocks"] = arraySafeVal($info, "height");
+				$this->error = $this->rpc->error;
+				return $info;
 			case 'getblock':
 				$hash = arraySafeVal($params, 0);
 				$block = $this->rpc->rpcget("/consensus/blocks?id={$hash}");
