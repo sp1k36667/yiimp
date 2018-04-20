@@ -107,21 +107,17 @@ function BackendBlockFind1($coinid = NULL)
 		$remote = new WalletRPC($coin);
 
 		$block = $remote->getblock($db_block->blockhash);
-		// debuglog("block is: {$block->blockhash}, parentid: {$block->parentid}");
+		// debuglog("block is: {$block->blockhash}, height: {$db_block->height}, parentid: {$block->parentid}");
 		$block_age = time() - $db_block->time;
 		if($coin->rpcencoding == 'SC') {
-			debuglog("rpc encoding: {$coin->rpcencoding}");
-			if (!$block) {
+			if (!$block || !isset($block["parentid"]) || !isset($block["minerpayouts"])) {
 				$db_block->amount = 0;
-				// $db_block->save();
+				$db_block->save();
 				debuglog("{$coin->symbol} orphan {$db_block->height} after ".(time() - $db_block->time)." seconds");
-
 				continue;
 			}
-			$db_block->txhash = $block->minerpayouts[0];
 			$db_block->category = 'immature';						//$tx['details'][0]['category'];
-			$db_block->amount = $tx['details'][0]['amount'];
-			$db_block->confirmations = $tx['confirmations'];
+			$db_block->amount = doubleval(substr($block["minerpayouts"][0]['value'], 0, -16)) / 1e8;
 			$db_block->price = $coin->price;
 
 			if (!$db_block->save())
@@ -167,7 +163,7 @@ function BackendBlockFind1($coinid = NULL)
 		$db_block->confirmations = $tx['confirmations'];
 		$db_block->price = $coin->price;
 
-		// save worker to compute blocs found per worker (current workers stats)
+		// save worker to compute blocks found per worker (current workers stats)
 		// now made directly in stratum - require DB update 2015-09-20
 		if (empty($db_block->workerid) && $db_block->userid > 0) {
 			$db_block->workerid = (int) dboscalar(
@@ -198,7 +194,7 @@ function BackendBlocksUpdate($coinid = NULL)
 
 	$sqlFilter = $coinid ? " AND coin_id=".intval($coinid) : '';
 
-	$list = getdbolist('db_blocks', "category IN ('immature','stake','orphan') $sqlFilter ORDER BY time");
+	$list = getdbolist('db_blocks', "category IN ('immature','stake') $sqlFilter ORDER BY time"); // ,'orphan'
 	foreach($list as $block)
 	{
 		$coin = getdbo('db_coins', $block->coin_id);
@@ -209,6 +205,34 @@ function BackendBlocksUpdate($coinid = NULL)
 		}
 
 		$remote = new WalletRPC($coin);
+		if($coin->rpcencoding == 'SC' && $block->category == 'immature') {
+			// checkout is it orphan by getblocks
+			$remote_block = $remote->getblock($block->blockhash);
+			if (!$remote_block || !isset($remote_block["parentid"]) || !isset($remote_block["minerpayouts"])) {
+				// if not exist
+				$block->category = 'orphan';
+				$block->amount = 0;
+				$block->save();
+				continue;
+			}
+
+			// deal confirmation check here
+			$consensus = $remote->getinfo();
+			$confirmations = $consensus['blocks'] - $block->height;
+			// mature after 6 confirmations
+			if($confirmations > 6) {
+				$block->category = 'generate';
+				$block->save();
+				dborun("UPDATE earnings SET status=1, mature_time=UNIX_TIMESTAMP() WHERE blockid=".intval($block->id)." AND status!=-1");
+			}
+			continue;
+		}
+
+		if($coin->rpcencoding == 'SC' && $block->category == 'orphan') {
+			// TODO: deal sc orphan state
+			continue;
+		}
+
 		if(empty($block->txhash))
 		{
 			$blockext = $remote->getblock($block->blockhash);
@@ -217,6 +241,7 @@ function BackendBlocksUpdate($coinid = NULL)
 				$block->category = 'stake';
 				$block->save();
 			}
+
 
 			if(!$blockext || !isset($blockext['tx'][0])) continue;
 
