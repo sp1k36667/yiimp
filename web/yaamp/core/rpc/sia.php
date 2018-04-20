@@ -43,7 +43,7 @@ class SiaRPC
 		}
 
 		$this->raw_response = curl_exec($curl);
-		$this->response = json_decode($this->raw_response);
+		$this->response = json_decode($this->raw_response, TRUE);
 
 		// If the status is not 200, something is wrong
 		$this->status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
