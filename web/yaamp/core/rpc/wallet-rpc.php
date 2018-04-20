@@ -384,7 +384,6 @@ class WalletRPC {
 		else if ($this->type == 'Siacoin')
 		{
 			switch ($method) {
-			// TODO
 			case 'getinfo':
 				$info = $this->rpc->rpcget('/consensus');
 				$info['blocks'] = $info['height'];
@@ -399,8 +398,28 @@ class WalletRPC {
 			case 'listsinceblock':
 				$txs = array();
 				return $txs;
+			case 'sendmany':
+				$destinations = array();
+				foreach ($params as $dest) {
+					foreach ($dest as $addr => $amount) {
+						// convert back from full SCs to hastings
+						[$before_decimal, $after_decimal] = explode('.', strval($amount));
+						$value = $before_decimal . $after_decimal . str_repeat('0', 16);
+						$data = array("value" => $value, "unlockhash"=>$addr);
+						$destinations[] = (object) $data;
+					}
+				}
+				$json_array = json_encode($destinations);
+				$res = $this->rpcpost("/wallet/siacoins?outputs=$json_array");
+				$this->error = $this->rpc->error;
+				return $res;
+			case 'getbalance':
+				$wallet_info = $this->rpc->rpcget("/wallet");
+				$hastings = $wallet_info['confirmedsiacoinbalance']
+				// TODO convert hastings to double
+				return $hasting;
+				break
 			}
-
 		}
 
 		// Bitcoin RPC
