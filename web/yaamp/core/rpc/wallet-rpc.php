@@ -396,6 +396,9 @@ class WalletRPC {
 				$block->blockhash = $hash;
 				$this->error = $this->rpc->error;
 				return $block;
+			case 'listsinceblock':
+				$txs = array();
+				return $txs;
 			}
 
 		}
