@@ -41,7 +41,6 @@ function BackendBlockNew($coin, $db_block)
 		$earning->amount = $amount;
 		$earning->price = $coin->price;
 
-		// TODO what is the 'generate' category
 		if($db_block->category == 'generate')
 		{
 			$earning->mature_time = time();
