@@ -383,6 +383,15 @@ class WalletRPC {
 		// Siacoin
 		else if ($this->type == 'Siacoin')
 		{
+			$hasting_to_amount = function ($hasting) {
+				return doubleval(substr($hasting, 0, -16)) / 1e8;
+			};
+
+			$amount_to_hasting = function ($amount) {
+				$amount = $amount * 1e8;
+				return sprintf("%.0f", $amount) . str_repeat('0', 16);
+			};
+
 			switch ($method) {
 			case 'getinfo':
 				$info = $this->rpc->rpcget('/consensus');
@@ -393,6 +402,9 @@ class WalletRPC {
 				$hash = arraySafeVal($params, 0);
 				$block = $this->rpc->rpcget("/consensus/blocks?id={$hash}");
 				$block['blockhash'] = $hash;
+				if ($block && isset($block["minerpayouts"]) && isset($block["minerpayouts"][0]) && isset($block["minerpayouts"][0]['value'])) {
+					$block["minerpayouts"][0]['value'] = $hasting_to_amount($block["minerpayouts"][0]['value']);
+				}
 				$this->error = $this->rpc->error;
 				return $block;
 			case 'listsinceblock':
@@ -400,25 +412,29 @@ class WalletRPC {
 				return $txs;
 			case 'sendmany':
 				$destinations = array();
-				foreach ($params as $dest) {
-					foreach ($dest as $addr => $amount) {
-						// convert back from full SCs to hastings
-						[$before_decimal, $after_decimal] = explode('.', strval($amount));
-						$value = $before_decimal . $after_decimal . str_repeat('0', 16);
-						$data = array("value" => $value, "unlockhash"=>$addr);
-						$destinations[] = (object) $data;
-					}
+				$addresses = arraySafeVal($params, 0);
+				debuglog("send many 1:" . json_encode($addresses));
+				foreach ($addresses as $addr => $amount) {
+					// convert back from full SCs to hastings
+					$value = $amount_to_hasting($amount);
+					$data = array("value" => $value, "unlockhash"=>$addr);
+					$destinations[] = (object) $data;
 				}
-				$json_array = json_encode($destinations);
-				$res = $this->rpcpost("/wallet/siacoins?outputs=$json_array");
+				$outputs = json_encode($destinations);
+				debuglog("send many 2:" . $outputs);
+				$res = $this->rpc->rpcpost("/wallet/siacoins?outputs={$outputs}");
 				$this->error = $this->rpc->error;
+				debuglog("send many 3:" . json_encode($res));
+				if ($res && isset($res['transactionids'])) {
+					return end($res['transactionids']); // assume last is the real payout
+				}
 				return $res;
 			case 'getbalance':
 				$wallet_info = $this->rpc->rpcget("/wallet");
-				$hastings = $wallet_info['confirmedsiacoinbalance']
+				$hastings = $wallet_info['confirmedsiacoinbalance'];
 				// TODO convert hastings to double
-				return $hasting;
-				break
+				return $hasting_to_amount($hastings);
+				break;
 			}
 		}
 

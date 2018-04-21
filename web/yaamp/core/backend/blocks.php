@@ -89,7 +89,7 @@ function BackendBlockFind1($coinid = NULL)
 {
 	$sqlFilter = $coinid ? " AND coin_id=".intval($coinid) : '';
 
-	debuglog(__METHOD__);
+	// debuglog(__METHOD__);
 	$list = getdbolist('db_blocks', "category='new' $sqlFilter ORDER BY time");
 	foreach($list as $db_block)
 	{
@@ -116,7 +116,7 @@ function BackendBlockFind1($coinid = NULL)
 				continue;
 			}
 			$db_block->category = 'immature';						//$tx['details'][0]['category'];
-			$db_block->amount = doubleval(substr($block["minerpayouts"][0]['value'], 0, -16)) / 1e8;
+			$db_block->amount = $block["minerpayouts"][0]['value'];
 			$db_block->price = $coin->price;
 
 			if (!$db_block->save())
