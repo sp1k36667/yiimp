@@ -112,7 +112,7 @@ class db_coins extends CActiveRecord
 			$htmlOpts = array_merge(array('target'=>'_blank'), $htmlOptions);
 			return CHtml::link($label, $url, $htmlOpts);
 		}
-		else if ($this->symbol == 'SC') {
+		else if ($this->symbol == 'SC' && isset($params['txid'])) {
 			$url = 'https://explorer.siahub.info/hash/'.$params['txid'];
 			$htmlOpts = array_merge(array('target'=>'_blank'), $htmlOptions);
 			return CHtml::link($label, $url, $htmlOpts);
