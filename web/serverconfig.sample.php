@@ -14,7 +14,7 @@ define('YAAMP_DBPASSWORD', 'password');
 define('YAAMP_MEMCACHEHOST', '127.0.0.1');
 
 define('YAAMP_PRODUCTION', true);
-define('YAAMP_RENTAL', true);
+define('YAAMP_RENTAL', false);
 define('YAAMP_LIMIT_ESTIMATE', false);
 
 define('YAAMP_FEES_MINING', 0.5);
