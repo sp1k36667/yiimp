@@ -410,6 +410,11 @@ class WalletRPC {
 			case 'listsinceblock':
 				$txs = array();
 				return $txs;
+			case 'listtransactions':
+				$depth = arraySafeVal($params, 1);
+				$txs = $this->rpc->rpcget("/wallet/transactions?depth={$depth}");
+				$this->error = $this->rpc->error;
+				return $txs;
 			case 'sendmany':
 				$destinations = array();
 				$addresses = arraySafeVal($params, 0);
