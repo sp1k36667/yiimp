@@ -124,17 +124,24 @@ set up Go (must be at least 1.10)
 add the following to your ~/.bashrc  
 
 	export GOPATH=$HOME/.go
-	export PATH=$PATH:/usr/lib/go-1.10/bin
+	export PATH=$PATH:/usr/lib/go-1.10/bin:$GOPATH/bin
 
 > source ~/.bashrc  
 
-set up Sia stratum server
+build Sia stratum server
 ---
 > go get -u github.com/ToastPool/Sia/...
 > mv ~/.go/src/github.com/ToastPool/Sia ~/.go/src/github.com/NebulousLabs/Sia
 > cd ~/.go/src/github.com/NebulousLabs/Sia
 > make dependencies
 > make release
+
+configure and run Sia stratum server
+---
+> mkdir ~/siad_data && cd ~/siad_data
+> cp ~/.go/src/github.com/NebulousLabs/Sia/sampleconfigs/sia.yml ~/siad_data/
+> vim sia.yml
+> siad -M cgtwp
 
 # For docker users
 
