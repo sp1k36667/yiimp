@@ -17,6 +17,7 @@ function updateRawcoins()
 	exchange_set_default('nova', 'disabled', true);
 	exchange_set_default('stocksexchange', 'disabled', true);
 	exchange_set_default('tradesatoshi', 'disabled', true);
+	exchange_set_default('kucoin', 'disabled', true);
 
 	settings_prefetch_all();
 
