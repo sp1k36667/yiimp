@@ -435,6 +435,11 @@ class WalletRPC {
 				// TODO convert hastings to double
 				return $hasting_to_amount($hastings);
 				break;
+			case 'getblocktemplate':
+				$info = $this->rpc->rpcget('/consensus');
+				$this->error = $this->rpc->error;
+				return $info;
+				break;
 			}
 		}
 

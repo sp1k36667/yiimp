@@ -172,6 +172,11 @@ function BackendCoinsUpdate()
 				$coin->auto_ready = ($coin->connections > 0);
 			}
 
+			else if ($coin->rpcencoding == 'SC')
+			{
+				$coin->reward = 300000 - $template['height'];
+			}
+
 			else if(strcasecmp($remote->error, 'method not found') == 0)
 			{
 				$template = $remote->getmemorypool();
