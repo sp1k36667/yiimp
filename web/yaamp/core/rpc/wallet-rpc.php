@@ -440,6 +440,18 @@ class WalletRPC {
 				$this->error = $this->rpc->error;
 				return $info;
 				break;
+			case 'getpeerinfo':
+				$info = $this->rpc->rpcget('/gateway');
+				$this->error = $this->rpc->error;
+				$btc_peer = function ($sia_peer)  {
+					return array(
+						"addr" => $sia_peer["netaddress"],
+						"version" => $sia_peer["version"],
+						"subver" => $sia_peer["version"],
+					);
+				};
+				return array_map($btc_peer, $info['peers']);
+				break;
 			}
 		}
 
