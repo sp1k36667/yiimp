@@ -440,6 +440,11 @@ class WalletRPC {
 				$this->error = $this->rpc->error;
 				return $info;
 				break;
+			case 'getversion':
+				$ret = $this->rpc->rpcget('/daemon/version');
+				$this->error = $this->rpc->error;
+				return $ret['version'];
+				break;
 			}
 		}
 

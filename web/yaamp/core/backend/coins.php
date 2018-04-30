@@ -251,7 +251,11 @@ function BackendCoinsUpdate()
 			$coin->last_network_found = time();
 		}
 
-		$coin->version = substr($info['version'], 0, 32);
+		if ($coin->rpcencoding == 'SC') {
+			$coin->version = $remote->getversion();
+		} else {
+			$coin->version = substr($info['version'], 0, 32);
+		}
 		$coin->block_height = $info['blocks'];
 
 		if($coin->powend_height > 0 && $coin->block_height > $coin->powend_height) {
