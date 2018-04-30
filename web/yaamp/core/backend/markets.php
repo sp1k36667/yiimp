@@ -1583,7 +1583,7 @@ function updateOtherMarkets()
 				$coin->price2 = $ticker->price;
 				$coin->price  = AverageIncrement((float)$coin->price, (float)$coin->price2);
 				if ($coin->save()) {
-					debuglog("cryptonator: $symbol price set to ".bitcoinvaluetoa($coin->price));
+					// debuglog("cryptonator: $symbol price set to ".bitcoinvaluetoa($coin->price));
 				}
 			}
 		}

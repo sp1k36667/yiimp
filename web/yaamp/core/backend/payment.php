@@ -38,6 +38,9 @@ function BackendCoinPayments($coin)
 	$remote = new WalletRPC($coin);
 
 	$info = $remote->getinfo();
+	$balance = $remote->getbalance();
+	$info['balance'] = $balance;
+
 	if(!$info) {
 		debuglog("payment: can't connect to {$coin->symbol} wallet");
 		return;
@@ -192,10 +195,7 @@ function BackendCoinPayments($coin)
 	// default account
 	$account = $coin->account;
 
-	if (!$coin->txmessage)
-		$tx = $remote->sendmany($account, $addresses);
-	else
-		$tx = $remote->sendmany($account, $addresses, 1, YAAMP_SITE_NAME);
+	$tx = $remote->sendmany($addresses);
 
 	$errmsg = NULL;
 	if(!$tx) {
@@ -285,36 +285,36 @@ function BackendCoinPayments($coin)
 	// redo failed payouts
 	if (!empty($addresses))
 	{
-		if (!$coin->txmessage)
-			$tx = $remote->sendmany($account, $addresses);
-		else
-			$tx = $remote->sendmany($account, $addresses, 1, YAAMP_SITE_NAME." retry");
+		$tx = $remote->sendmany($addresses);
 
-		if(empty($tx)) {
-			debuglog($remote->error);
-
-			foreach ($payouts as $id => $uid) {
-				$payout = getdbo('db_payouts', $id);
-				if ($payout && $payout->id == $id) {
-					$payout->errmsg = $remote->error;
-					$payout->save();
-				}
-			}
-
-			send_email_alert('payouts', "{$coin->symbol} payout problems detected\n {$remote->error}", $mailmsg);
-
+		$errmsg = NULL;
+		if(!$tx) {
+			debuglog("sendmany: unable to send $total_to_pay {$remote->error} ".json_encode($addresses));
+			$errmsg = $remote->error;
+		}
+		else if(!is_string($tx)) {
+			debuglog("sendmany: result is not a string tx=".json_encode($tx));
+			$errmsg = json_encode($tx);
 		} else {
+			$mailmsg .= "\ntxid $tx\n";
+			send_email_alert('payouts', "{$coin->symbol} payout problems resolved", $mailmsg);
+		}
 
-			foreach ($payouts as $id => $uid) {
-				$payout = getdbo('db_payouts', $id);
-				if ($payout && $payout->id == $id) {
+		foreach($payouts as $id => $uid) {
+			$payout = getdbo('db_payouts', $id);
+			if ($payout && $payout->id == $id) {
+				$payout->errmsg = $errmsg;
+				if (empty($errmsg)) {
 					$payout->tx = $tx;
-					$payout->save();
-				} else {
-					debuglog("payout retry $id for $uid not found!");
+					$payout->completed = 1;
 				}
+				$payout->save();
+			} else {
+				debuglog("payout retry $id for $uid not found!");
 			}
+		}
 
+		if(empty($errmsg)) {
 			$mailmsg .= "\ntxid $tx\n";
 			send_email_alert('payouts', "{$coin->symbol} payout problems resolved", $mailmsg);
 		}

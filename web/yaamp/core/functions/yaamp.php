@@ -232,6 +232,7 @@ function getAlgoPort($algo)
 		// 5555 to 5683 reserved
 		'blake'		=> 5733,
 		'blakecoin'	=> 5743,
+		'blake2b'   => 3333,
 		'decred'	=> 3252,
 		'vanilla'	=> 5755,
 		'blake2s'	=> 5766,
