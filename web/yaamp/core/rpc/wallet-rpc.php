@@ -419,8 +419,23 @@ class WalletRPC {
 				return $txs;
 			case 'listtransactions':
 				$depth = arraySafeVal($params, 1);
-				$txs = $this->rpc->rpcget("/wallet/transactions?depth={$depth}");
+				$tx_results = $this->rpc->rpcget("/wallet/transactions?depth={$depth}");
 				$this->error = $this->rpc->error;
+				$txs = array();
+				foreach ($tx_results["confirmedtransactions"] as $idx=>$tx_result) {
+					$amount = 0;
+					foreach ($tx_result["outputs"] as $output_idx=>$output) {
+						$amount += $hasting_to_amount($output["value"]);
+					}
+					$tx = array(
+						"time" => $tx_result["confirmationtimestamp"],
+						"txid" => $tx_result["transactionid"],
+						"height" => $tx_result["confirmationheight"],
+						"amount" => $amount,
+						"category" => "???",
+					);
+					$txs[] = $tx;
+				}
 				return $txs;
 			case 'sendmany':
 				$destinations = array();
