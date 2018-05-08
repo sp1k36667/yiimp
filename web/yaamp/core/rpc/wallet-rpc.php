@@ -396,6 +396,9 @@ class WalletRPC {
 			case 'getinfo':
 				$info = $this->rpc->rpcget('/consensus');
 				$info['blocks'] = $info['height'];
+				$wallet_info = $this->rpc->rpcget('/wallet');
+				$info['balance'] = $hasting_to_amount($wallet_info['confirmedsiacoinbalance']);
+				debuglog("balance " . json_encode($wallet_info));
 				$this->error = $this->rpc->error;
 				return $info;
 			case 'getblock':
@@ -407,6 +410,10 @@ class WalletRPC {
 				}
 				$this->error = $this->rpc->error;
 				return $block;
+			case 'getdifficulty':
+				$info = $this->rpc->rpcget('/consensus');
+				$this->error = $this->rpc->error;
+				return $info['difficulty'];
 			case 'listsinceblock':
 				$txs = array();
 				return $txs;

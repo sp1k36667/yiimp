@@ -108,6 +108,7 @@ services:
         - PHP_IDE_CONFIG=${PHP_IDE_CONFIG}
       networks:
         - backend
+        - rpc_net
 
 ### PHP Worker Container #####################################
 
@@ -692,6 +693,8 @@ networks:
     driver: "bridge"
   backend:
     driver: "bridge"
+  rpc_net:
+    external: true
 
 ### Volumes Setup #############################################
 
