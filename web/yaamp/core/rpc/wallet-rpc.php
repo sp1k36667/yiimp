@@ -418,11 +418,15 @@ class WalletRPC {
 				$txs = array();
 				return $txs;
 			case 'listtransactions':
-				$depth = arraySafeVal($params, 1);
-				$tx_results = $this->rpc->rpcget("/wallet/transactions?depth={$depth}");
+				$maxrows = arraySafeVal($params, 1);
+				// TODO: only fetch 1 block for now
+				$tx_results = $this->rpc->rpcget("/wallet/transactions?depth=1");
 				$this->error = $this->rpc->error;
 				$txs = array();
 				foreach ($tx_results["confirmedtransactions"] as $idx=>$tx_result) {
+					if($idx >= $maxrows) {
+						break;
+					}
 					$amount = 0;
 					foreach ($tx_result["outputs"] as $output_idx=>$output) {
 						$amount += $hasting_to_amount($output["value"]);
@@ -432,8 +436,15 @@ class WalletRPC {
 						"txid" => $tx_result["transactionid"],
 						"height" => $tx_result["confirmationheight"],
 						"amount" => $amount,
-						"category" => "???",
 					);
+
+					// TODO: just judge by last outputs address now
+					if(end($tx_result["outputs"])['walletaddress']) {
+						$tx['category'] = 'receive';
+					} else {
+						$tx['category'] = 'send';
+					}
+
 					$txs[] = $tx;
 				}
 				return $txs;
