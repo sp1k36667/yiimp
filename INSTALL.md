@@ -4,14 +4,14 @@
 
 build stratum server binary
 ---
-> cd stratum/iniparser  
-> make  
-> cd ..  
-> make  
-> cd ..  
-> cd blocknotify  
-> make  
-> cd ..  
+> cd stratum/iniparser
+> make
+> cd ..
+> make
+> cd ..
+> cd blocknotify
+> make
+> cd ..
 
 install stratum and webserver dependencies
 ---
@@ -22,33 +22,33 @@ set up nginx
 First, make sure there you have no configs already specified as "default_server" or "server_name _".
 Then, create /etc/nginx/sites-enabled/pool.conf:
 
-	server {                                                                                              
+	server {
 	        listen 80 default_server;
-	        listen [::]:80 default_server;                                                                
-	                                                                                                      
+	        listen [::]:80 default_server;
+
 	        root /var/www/web;
-	        index index.html index.htm;                                                                   
-	
+	        index index.html index.htm;
+
 	        server_name _;
-	
-	        location / {                                                                                  
-	            try_files $uri @rewrite;                                                                  
-	        }                                                                                             
-	
-	        location @rewrite {                                                                           
-	            rewrite ^/(.*)$ /index.php?r=$1;                                                          
+
+	        location / {
+	            try_files $uri @rewrite;
 	        }
-	
+
+	        location @rewrite {
+	            rewrite ^/(.*)$ /index.php?r=$1;
+	        }
+
 	        location ~ \.php$ {
-	            include snippets/fastcgi-php.conf;                                                        
-	            fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;                                           
+	            include snippets/fastcgi-php.conf;
+	            fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
 	        }
 	}
 
 restart nginx and verify that it's running
 ---
-> sudo service nginx restart  
-> sudo service nginx status  
+> sudo service nginx restart
+> sudo service nginx status
 
 set up sql database
 ---
@@ -63,18 +63,18 @@ set up sql accounts for users php and yiimp
 
 load initial sql data
 ---
-> cd sql  
-> ./load_sql.sh  
-> cd ..  
+> cd sql
+> ./load_sql.sh
+> cd ..
 
 set up stratum folder
 ---
-> mkdir /var/stratum  
-> mkdir /var/stratum/config  
-> cp -rf stratum/config /var/stratum/  
-> cp stratum/config/foo.conf /var/stratum  
-> sudo cp stratum/stratum /var/stratum/  
-> sudo cp blocknotify/blocknotify /var/stratum/  
+> mkdir /var/stratum
+> mkdir /var/stratum/config
+> cp -rf stratum/config /var/stratum/
+> cp stratum/config/foo.conf /var/stratum
+> sudo cp stratum/stratum /var/stratum/
+> sudo cp blocknotify/blocknotify /var/stratum/
 
 setup web folder
 ---
@@ -94,24 +94,24 @@ then configure the keys file
 
 then configure the web app
 ---
-> sudo mv /var/www/web/serverconfig.sample.php /var/www/web/serverconfig.php  
-> sudo vim /var/www/web/serverconfig.php  
-> ... need to change YAAMP_DBNAME, YAAMP_DBUSER, and YAAMP_DBPASSWORD  
+> sudo mv /var/www/web/serverconfig.sample.php /var/www/web/serverconfig.php
+> sudo vim /var/www/web/serverconfig.php
+> ... need to change YAAMP_DBNAME, YAAMP_DBUSER, and YAAMP_DBPASSWORD
 
 make sure everything works
 ---
-> cd bin  
-> ./yiimp checkup  
+> cd bin
+> ./yiimp checkup
 
 run scripts in screen
 ---
-> cd /var/www/web  
-> screen  
-> ./main.sh  
-> ... switch screen ...  
-> ./loop2.sh  
-> ... switch screen ...  
-> ./block.sh  
+> cd /var/www/web
+> screen
+> ./main.sh
+> ... switch screen ...
+> ./loop2.sh
+> ... switch screen ...
+> ./block.sh
 
 Now your webserver should be running! Check it in your web browser
 
@@ -119,14 +119,14 @@ Now your webserver should be running! Check it in your web browser
 
 set up Go (must be at least 1.10)
 ---
-> apt install golang-1.10  
+> apt install golang-1.10
 
-add the following to your ~/.bashrc  
+add the following to your ~/.bashrc
 
 	export GOPATH=$HOME/.go
 	export PATH=$PATH:/usr/lib/go-1.10/bin:$GOPATH/bin
 
-> source ~/.bashrc  
+> source ~/.bashrc
 
 build Sia stratum server
 ---
@@ -150,6 +150,10 @@ copy and change docker env
 > cd yiimplara
 > cp env-example .env
 > vi .env (change mysql part)
+
+create rpc external network
+---
+> docker network create rpc_net
 
 run docker
 ---

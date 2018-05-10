@@ -398,7 +398,7 @@ class WalletRPC {
 				$info['blocks'] = $info['height'];
 				$wallet_info = $this->rpc->rpcget('/wallet');
 				$info['balance'] = $hasting_to_amount($wallet_info['confirmedsiacoinbalance']);
-				debuglog("balance " . json_encode($wallet_info));
+				// debuglog("balance " . json_encode($wallet_info));
 				$this->error = $this->rpc->error;
 				return $info;
 			case 'getblock':
