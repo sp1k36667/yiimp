@@ -19,7 +19,7 @@ function BackendStatsUpdate()
 		//send_email_alert('stratums', "stratum restart", "stratum restart: ".implode(', ',$idleing));
 	}
 
-	dborun("DELETE FROM stratums WHERE time<$t");
+	// dborun("DELETE FROM stratums WHERE time<$t");
 	// dborun("DELETE FROM workers WHERE pid NOT IN (SELECT pid FROM stratums)");
 
 	// todo: cleanup could be done once per day or week...
