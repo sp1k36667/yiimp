@@ -1010,7 +1010,7 @@ class SiteController extends CommonController
 		if($coin) {
 			BackendBlockFind1($coin->id);
 			BackendBlocksUpdate($coin->id);
-			BackendBlockFind2($coin->id);
+			// BackendBlockFind2($coin->id);
 			BackendUpdatePoolBalances($coin->id);
 		}
 		$this->goback();

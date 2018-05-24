@@ -71,9 +71,7 @@ function BackendBlockNew($coin, $db_block)
 	// TODO wipe all shares older than 5 minutes, but why?
 	try {
 		dborun("DELETE FROM shares WHERE algo=:algo AND $sqlCond", array(':algo'=>$coin->algo));
-
 	} catch (CDbException $e) {
-
 		debuglog("unable to delete shares $sqlCond retrying...");
 		sleep(1);
 		dborun("DELETE FROM shares WHERE algo=:algo AND $sqlCond", array(':algo'=>$coin->algo));
