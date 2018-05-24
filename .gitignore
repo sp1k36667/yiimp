@@ -22,3 +22,5 @@ web/assets/
 .DS_Store
 .vscode/
 *.xz
+.idea/*
+web/yaamp/.idea/
