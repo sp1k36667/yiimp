@@ -191,7 +191,7 @@ function BackendBlocksUpdate($coinid = NULL)
 
 	$sqlFilter = $coinid ? " AND coin_id=".intval($coinid) : '';
 
-	$list = getdbolist('db_blocks', "category IN ('immature','stake') $sqlFilter ORDER BY time"); // ,'orphan'
+	$list = getdbolist('db_blocks', "category IN ('immature','stake','orphan') $sqlFilter ORDER BY time"); //
 	foreach($list as $block)
 	{
 		$coin = getdbo('db_coins', $block->coin_id);
@@ -226,7 +226,15 @@ function BackendBlocksUpdate($coinid = NULL)
 		}
 
 		if($coin->rpcencoding == 'SC' && $block->category == 'orphan') {
-			// TODO: deal sc orphan state
+			if ($coin->enable && (time() - $block->time) < 3600) {
+				$blockext = $remote->getblock($block->blockhash);
+				if (!$remote_block || !isset($remote_block["parentid"]) || !isset($remote_block["minerpayouts"])) {
+					continue; // keep orphan
+				}
+				debuglog("{$coin->name} orphan block {$block->height} is not anymore!");
+				$block->category = 'new'; // will set amount and restore user earnings
+				$block->save();
+			}
 			continue;
 		}
 
