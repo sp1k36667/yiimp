@@ -40,7 +40,7 @@ define('YAAMP_ADMIN_IP', ''); // samples: "80.236.118.26,90.234.221.11" or "10.0
 define('YAAMP_ADMIN_WEBCONSOLE', true);
 define('YAAMP_CREATE_NEW_COINS', true);
 define('YAAMP_NOTIFY_NEW_COINS', false);
-define('YAAMP_DEFAULT_ALGO', 'x11');
+define('YAAMP_DEFAULT_ALGO', 'blake2b');
 
 define('YAAMP_USE_NGINX', false);
 
