@@ -228,7 +228,7 @@ function BackendBlocksUpdate($coinid = NULL)
 		if($coin->rpcencoding == 'SC' && $block->category == 'orphan') {
 			if ($coin->enable && (time() - $block->time) < 3600) {
 				$blockext = $remote->getblock($block->blockhash);
-				if (!$remote_block || !isset($remote_block["parentid"]) || !isset($remote_block["minerpayouts"])) {
+				if (!$blockext || !isset($blockext["parentid"]) || !isset($blockext["minerpayouts"])) {
 					continue; // keep orphan
 				}
 				debuglog("{$coin->name} orphan block {$block->height} is not anymore!");
