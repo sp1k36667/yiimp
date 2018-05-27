@@ -118,9 +118,6 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600)." hours";
 </td></tr></table>
 
 <br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br><br>
 
 <script>
 
