@@ -19,8 +19,8 @@ function BackendStatsUpdate()
 		//send_email_alert('stratums', "stratum restart", "stratum restart: ".implode(', ',$idleing));
 	}
 
-	dborun("DELETE FROM stratums WHERE time<$t");
-	dborun("DELETE FROM workers WHERE pid NOT IN (SELECT pid FROM stratums)");
+	// dborun("DELETE FROM stratums WHERE time<$t");
+	// dborun("DELETE FROM workers WHERE pid NOT IN (SELECT pid FROM stratums)");
 
 	// todo: cleanup could be done once per day or week...
 	dborun("DELETE FROM hashstats WHERE IFNULL(hashrate,0) = 0 AND IFNULL(earnings,0) = 0");

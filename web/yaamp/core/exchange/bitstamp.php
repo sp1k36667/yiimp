@@ -20,7 +20,7 @@ function bitstamp_api_query($method, $params='')
 
 function bitstamp_api_user($method, $params='')
 {
-	require_once('/etc/yiimp/keys.php');
+	require_once('/var/www/web/keys.php');
 	if (!defined('EXCH_BITSTAMP_SECRET')) return false;
 
 	$cid = EXCH_BITSTAMP_ID; // your Customer ID

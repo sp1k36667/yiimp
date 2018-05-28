@@ -417,6 +417,14 @@ void hexlify(char *hex, const unsigned char *bin, int len)
 		sprintf(hex+strlen(hex), "%02x", bin[i]);
 }
 
+bool ishexa(char *hex, int len)
+{
+	for(int i=0; i<len; i++) {
+		if (!isxdigit(hex[i])) return false;
+	}
+	return true;
+}
+
 unsigned char binvalue(const char v)
 {
 	if(v >= '0' && v <= '9')
@@ -672,6 +680,29 @@ long long current_timestamp_dms() // allow 0.1 ms time
 
 	dms = 10000LL*te.tv_sec + round(te.tv_nsec/1e5);
 	return dms;
+}
+
+int opened_files()
+{
+	int fds = 0;
+	DIR *d = opendir("/proc/self/fd");
+	if (d) {
+		while (readdir(d)) fds++;
+		closedir(d);
+	}
+	return fds;
+}
+
+int resident_size()
+{
+	int sz, res = 0;
+	FILE *fp = fopen("/proc/self/statm", "r");
+	if (fp) {
+		int p = fscanf(fp, "%d", &sz);
+		if (p) p += fscanf(fp, "%d", &res);
+		fclose(fp);
+	}
+	return res;
 }
 
 void string_lower(char *s)

@@ -51,7 +51,7 @@ function kucoin_api_query($method, $params='', $returnType='object')
 function kucoin_api_user($method, $params=NULL, $isPostMethod=false)
 {
 	$exchange = 'kucoin';
-	require_once('/etc/yiimp/keys.php');
+	require_once('/var/www/web/keys.php');
 	if (!defined('EXCH_KUCOIN_SECRET')) define('EXCH_KUCOIN_SECRET', '');
 
 	if (empty(EXCH_KUCOIN_KEY) || empty(EXCH_KUCOIN_SECRET)) return false;

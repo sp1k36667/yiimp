@@ -3,7 +3,7 @@
 function BackendDoBackup()
 {
 	$d = date('Y-m-d-H', time());
-	$filename = "/root/backup/yaamp-$d.sql";
+	$filename = "/var/www/sql/yaamp-$d.sql";
 
 	if (is_readable("/usr/bin/xz")) {
 		$ziptool = "xz --threads=4"; $ext = ".xz";
@@ -11,7 +11,7 @@ function BackendDoBackup()
 		$ziptool = "gzip"; $ext = ".gz";
 	}
 
-	include_once("/etc/yiimp/keys.php");
+	include_once("/var/www/web/keys.php");
 
 	$host = YAAMP_DBHOST;
 	$db   = YAAMP_DBNAME;
@@ -35,8 +35,7 @@ function BackendQuickClean()
 
 	foreach($coins as $coin)
 	{
-		$delay = time() - 24*60*60;
-		if ($coin->symbol=='DCR') $delay = time() - 7*24*60*60;
+		$delay = time() - 7*24*60*60;
 
 		$id = dboscalar("select id from blocks where coin_id=$coin->id and time<$delay and
 			id not in (select blockid from earnings where coinid=$coin->id)
@@ -134,7 +133,7 @@ function BackendCleanDatabase()
 {
 	marketHistoryPrune();
 
-	$delay = time() - 60*24*60*60;
+	$delay = time() - 360*24*60*60;
 	dborun("DELETE from blocks where time<$delay");
 	dborun("delete from hashstats where time<$delay");
 	dborun("delete from payouts where time<$delay");

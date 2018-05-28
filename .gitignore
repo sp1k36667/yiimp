@@ -1,5 +1,7 @@
+*.so.0
 *.o
 *.a
+*.swp
 stratum/stratum
 stratum/blocknotify
 blocknotify/blocknotify
@@ -18,3 +20,8 @@ web/serverconfig.php
 web/assets/
 *.rej
 *.orig
+.DS_Store
+.vscode/
+*.xz
+.idea/*
+web/yaamp/.idea/

@@ -74,6 +74,7 @@ foreach($algos as $item)
 
 	$coinsym = '';
 	$coins = getdbocount('db_coins', "enable and visible and auto_ready and algo=:algo", array(':algo'=>$algo));
+		
 	if ($coins == 1) {
 		// If we only mine one coin, show it...
 		$coin = getdbosql('db_coins', "enable and visible and auto_ready and algo=:algo", array(':algo'=>$algo));

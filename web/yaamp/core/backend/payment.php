@@ -4,6 +4,7 @@ function BackendPayments()
 {
 	// attempt to increase max execution time limit for the cron job
 	set_time_limit(300);
+	debuglog(__METHOD__);
 
 	$list = getdbolist('db_coins', "enable and id in (select distinct coinid from accounts)");
 	foreach($list as $coin)
@@ -34,10 +35,13 @@ function BackendUserCancelFailedPayment($userid)
 
 function BackendCoinPayments($coin)
 {
-//	debuglog("BackendCoinPayments $coin->symbol");
+	debuglog("BackendCoinPayments $coin->symbol");
 	$remote = new WalletRPC($coin);
 
 	$info = $remote->getinfo();
+	$balance = $remote->getbalance();
+	$info['balance'] = $balance;
+
 	if(!$info) {
 		debuglog("payment: can't connect to {$coin->symbol} wallet");
 		return;
@@ -171,17 +175,19 @@ function BackendCoinPayments($coin)
 		if(!$user) continue;
 		if(!isset($addresses[$user->username])) continue;
 
+		$payment_amount = bitcoinvaluetoa($addresses[$user->username]);
+
 		$payout = new db_payouts;
 		$payout->account_id = $user->id;
 		$payout->time = time();
-		$payout->amount = bitcoinvaluetoa($user->balance*$coef);
+		$payout->amount = $payment_amount;
 		$payout->fee = 0;
 		$payout->idcoin = $coin->id;
 
 		if ($payout->save()) {
 			$payouts[$payout->id] = $user->id;
 
-			$user->balance = bitcoinvaluetoa(floatval($user->balance) - (floatval($user->balance)*$coef));
+			$user->balance = bitcoinvaluetoa(floatval($user->balance) - $payment_amount);
 			$user->save();
 		}
 	}
@@ -192,10 +198,7 @@ function BackendCoinPayments($coin)
 	// default account
 	$account = $coin->account;
 
-	if (!$coin->txmessage)
-		$tx = $remote->sendmany($account, $addresses);
-	else
-		$tx = $remote->sendmany($account, $addresses, 1, YAAMP_SITE_NAME);
+	$tx = $remote->sendmany($addresses);
 
 	$errmsg = NULL;
 	if(!$tx) {
@@ -285,36 +288,36 @@ function BackendCoinPayments($coin)
 	// redo failed payouts
 	if (!empty($addresses))
 	{
-		if (!$coin->txmessage)
-			$tx = $remote->sendmany($account, $addresses);
-		else
-			$tx = $remote->sendmany($account, $addresses, 1, YAAMP_SITE_NAME." retry");
+		$tx = $remote->sendmany($addresses);
 
-		if(empty($tx)) {
-			debuglog($remote->error);
-
-			foreach ($payouts as $id => $uid) {
-				$payout = getdbo('db_payouts', $id);
-				if ($payout && $payout->id == $id) {
-					$payout->errmsg = $remote->error;
-					$payout->save();
-				}
-			}
-
-			send_email_alert('payouts', "{$coin->symbol} payout problems detected\n {$remote->error}", $mailmsg);
-
+		$errmsg = NULL;
+		if(!$tx) {
+			debuglog("sendmany: unable to send $total_to_pay {$remote->error} ".json_encode($addresses));
+			$errmsg = $remote->error;
+		}
+		else if(!is_string($tx)) {
+			debuglog("sendmany: result is not a string tx=".json_encode($tx));
+			$errmsg = json_encode($tx);
 		} else {
+			$mailmsg .= "\ntxid $tx\n";
+			send_email_alert('payouts', "{$coin->symbol} payout problems resolved", $mailmsg);
+		}
 
-			foreach ($payouts as $id => $uid) {
-				$payout = getdbo('db_payouts', $id);
-				if ($payout && $payout->id == $id) {
+		foreach($payouts as $id => $uid) {
+			$payout = getdbo('db_payouts', $id);
+			if ($payout && $payout->id == $id) {
+				$payout->errmsg = $errmsg;
+				if (empty($errmsg)) {
 					$payout->tx = $tx;
-					$payout->save();
-				} else {
-					debuglog("payout retry $id for $uid not found!");
+					$payout->completed = 1;
 				}
+				$payout->save();
+			} else {
+				debuglog("payout retry $id for $uid not found!");
 			}
+		}
 
+		if(empty($errmsg)) {
 			$mailmsg .= "\ntxid $tx\n";
 			send_email_alert('payouts', "{$coin->symbol} payout problems resolved", $mailmsg);
 		}

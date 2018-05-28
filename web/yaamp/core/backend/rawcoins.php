@@ -17,26 +17,37 @@ function updateRawcoins()
 	exchange_set_default('nova', 'disabled', true);
 	exchange_set_default('stocksexchange', 'disabled', true);
 	exchange_set_default('tradesatoshi', 'disabled', true);
+	exchange_set_default('kucoin', 'disabled', true);
 
 	settings_prefetch_all();
 
 	if (!exchange_get('bittrex', 'disabled')) {
 		$list = bittrex_api_query('public/getcurrencies');
-		if(isset($list->result))
+		if(isset($list->result) && !empty($list->result))
 		{
 			dborun("UPDATE markets SET deleted=true WHERE name='bittrex'");
-			foreach($list->result as $currency)
+			foreach($list->result as $currency) {
+				if ($currency->Currency == 'BTC') {
+					exchange_set('bittrex', 'withdraw_fee_btc', $currency->TxFee);
+					continue;
+				}
 				updateRawCoin('bittrex', $currency->Currency, $currency->CurrencyLong);
+			}
 		}
 	}
 
 	if (!exchange_get('bleutrade', 'disabled')) {
 		$list = bleutrade_api_query('public/getcurrencies');
-		if(isset($list->result))
+		if(isset($list->result) && !empty($list->result))
 		{
 			dborun("UPDATE markets SET deleted=true WHERE name='bleutrade'");
-			foreach($list->result as $currency)
+			foreach($list->result as $currency) {
+				if ($currency->Currency == 'BTC') {
+					exchange_set('bleutrade', 'withdraw_fee_btc', $currency->TxFee);
+					continue;
+				}
 				updateRawCoin('bleutrade', $currency->Currency, $currency->CurrencyLong);
+			}
 		}
 	}
 
@@ -148,6 +159,21 @@ function updateRawcoins()
 					continue;
 				$symbol = strtoupper($e[0]);
 				updateRawCoin('cryptopia', $symbol);
+			}
+		}
+	}
+
+	if (!exchange_get('cryptobridge', 'disabled')) {
+		$list = cryptobridge_api_query('ticker');
+		if(is_array($list) && !empty($list))
+		{
+			dborun("UPDATE markets SET deleted=true WHERE name='cryptobridge'");
+			foreach($list as $ticker) {
+				$e = explode('_', $ticker->id);
+				if (strtoupper($e[1]) !== 'BTC')
+					continue;
+				$symbol = strtoupper($e[0]);
+				updateRawCoin('cryptobridge', $symbol);
 			}
 		}
 	}
@@ -357,7 +383,7 @@ function updateRawCoin($marketname, $symbol, $name='unknown')
 	if($symbol == 'BTC') return;
 
 	$coin = getdbosql('db_coins', "symbol=:symbol", array(':symbol'=>$symbol));
-	if(!$coin && $marketname != 'yobit')
+	if(!$coin && YAAMP_CREATE_NEW_COINS)
 	{
 		$algo = '';
 		if ($marketname == 'cryptopia') {
@@ -375,10 +401,14 @@ function updateRawCoin($marketname, $symbol, $name='unknown')
 			}
 		}
 
-		if (in_array($marketname, array('nova','askcoin','binance','coinexchange','coinsmarkets','hitbtc'))) {
+		if (in_array($marketname, array('nova','askcoin','binance','coinexchange','coinsmarkets','cryptobridge','hitbtc'))) {
 			// don't polute too much the db with new coins, its better from exchanges with labels
 			return;
 		}
+
+		// some other to ignore...
+		if (in_array($marketname, array('yobit','kucoin','tradesatoshi')))
+			return;
 
 		if (market_get($marketname, $symbol, "disabled")) {
 			return;

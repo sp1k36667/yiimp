@@ -2,7 +2,7 @@
 # Restart the pseudo cron screens...
 
 LOG_DIR=/work/yiimp/log
-WEB_DIR=/var/web
+WEB_DIR=/var/www/web
 
 screen -X -S main quit
 screen -X -S loop2 quit

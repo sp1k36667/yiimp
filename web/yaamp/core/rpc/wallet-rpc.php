@@ -7,6 +7,7 @@ class WalletRPC {
 	public $type = 'Bitcoin';
 	protected $rpc;
 	protected $rpc_wallet;
+	protected $hasGetInfo = false;
 
 	// cache
 	protected $account;
@@ -39,9 +40,14 @@ class WalletRPC {
 				$this->rpc_wallet = new CryptoRPC("127.0.0.1", $coin->rpcport, $coin->rpcuser, $coin->rpcpasswd);
 				$this->coin = $coin;
 				break;
+			case 'SC':
+				$this->type = 'Siacoin';
+				$this->rpc = new SiaRPC($coin->rpchost, $coin->rpcport, $coin->rpcpasswd);
+				break;
 			default:
 				$this->type = 'Bitcoin';
 				$this->rpc = new Bitcoin($coin->rpcuser, $coin->rpcpasswd, $coin->rpchost, $coin->rpcport, $url);
+				$this->hasGetInfo = $coin->hasgetinfo;
 			}
 
 		} else {
@@ -376,8 +382,153 @@ class WalletRPC {
 			return $res;
 		}
 
+		// Siacoin
+		else if ($this->type == 'Siacoin')
+		{
+			$hasting_to_amount = function ($hasting) {
+				return doubleval(substr($hasting, 0, -16)) / 1e8;
+			};
+
+			$amount_to_hasting = function ($amount) {
+				$amount = $amount * 1e8;
+				return sprintf("%.0f", $amount) . str_repeat('0', 16);
+			};
+
+			switch ($method) {
+			case 'getinfo':
+				$info = $this->rpc->rpcget('/consensus');
+				$info['blocks'] = $info['height'];
+				$wallet_info = $this->rpc->rpcget('/wallet');
+				$info['balance'] = $hasting_to_amount($wallet_info['confirmedsiacoinbalance']);
+				// debuglog("balance " . json_encode($wallet_info));
+				$this->error = $this->rpc->error;
+				return $info;
+			case 'getblock':
+				$hash = arraySafeVal($params, 0);
+				$block = $this->rpc->rpcget("/consensus/blocks?id={$hash}");
+				$block['blockhash'] = $hash;
+				if ($block && isset($block["minerpayouts"]) && isset($block["minerpayouts"][0]) && isset($block["minerpayouts"][0]['value'])) {
+					$block["minerpayouts"][0]['value'] = $hasting_to_amount($block["minerpayouts"][0]['value']);
+				}
+				$this->error = $this->rpc->error;
+				return $block;
+			case 'getdifficulty':
+				$info = $this->rpc->rpcget('/consensus');
+				$this->error = $this->rpc->error;
+				return $info['difficulty'];
+			case 'listsinceblock':
+				$txs = array();
+				return $txs;
+			case 'listtransactions':
+				$maxrows = arraySafeVal($params, 1);
+				// TODO: only fetch 1 block for now
+				$tx_results = $this->rpc->rpcget("/wallet/transactions?depth=1");
+				$this->error = $this->rpc->error;
+				$txs = array();
+				foreach ($tx_results["confirmedtransactions"] as $idx=>$tx_result) {
+					if($idx >= $maxrows) {
+						break;
+					}
+					$amount = 0;
+					foreach ($tx_result["outputs"] as $output_idx=>$output) {
+						$amount += $hasting_to_amount($output["value"]);
+					}
+					$tx = array(
+						"time" => $tx_result["confirmationtimestamp"],
+						"txid" => $tx_result["transactionid"],
+						"height" => $tx_result["confirmationheight"],
+						"amount" => $amount,
+					);
+
+					// TODO: just judge by last outputs address now
+					if(end($tx_result["outputs"])['walletaddress']) {
+						$tx['category'] = 'receive';
+					} else {
+						$tx['category'] = 'send';
+					}
+
+					$txs[] = $tx;
+				}
+				return $txs;
+			case 'sendmany':
+				$destinations = array();
+				$addresses = arraySafeVal($params, 0);
+				debuglog("send many 1:" . json_encode($addresses));
+				foreach ($addresses as $addr => $amount) {
+					// convert back from full SCs to hastings
+					$value = $amount_to_hasting($amount);
+					$data = array("value" => $value, "unlockhash"=>$addr);
+					$destinations[] = (object) $data;
+				}
+				$outputs = json_encode($destinations);
+				debuglog("send many 2:" . $outputs);
+				$res = $this->rpc->rpcpost("/wallet/siacoins?outputs={$outputs}");
+				$this->error = $this->rpc->error;
+				debuglog("send many 3:" . json_encode($res));
+				if ($res && isset($res['transactionids'])) {
+					return end($res['transactionids']); // assume last is the real payout
+				}
+				return $res;
+			case 'getbalance':
+				$wallet_info = $this->rpc->rpcget("/wallet");
+				$hastings = $wallet_info['confirmedsiacoinbalance'];
+				// TODO convert hastings to double
+				return $hasting_to_amount($hastings);
+				break;
+			case 'getblocktemplate':
+				$info = $this->rpc->rpcget('/consensus');
+				$this->error = $this->rpc->error;
+				return $info;
+				break;
+			case 'getversion':
+				$ret = $this->rpc->rpcget('/daemon/version');
+				$this->error = $this->rpc->error;
+				return $ret['version'];
+				break;
+			case 'getpeerinfo':
+				$info = $this->rpc->rpcget('/gateway');
+				$this->error = $this->rpc->error;
+				$btc_peer = function ($sia_peer)  {
+					return array(
+						"addr" => $sia_peer["netaddress"],
+						"version" => $sia_peer["version"],
+						"subver" => $sia_peer["version"],
+					);
+				};
+				return array_map($btc_peer, $info['peers']);
+				break;
+			}
+		}
+
 		// Bitcoin RPC
-		$res = $this->rpc->__call($method,$params);
+        	switch ($method) {
+			case 'getinfo':
+				if ($this->hasGetInfo) {
+					$res = $this->rpc->__call($method,$params);
+				} else {
+					$miningInfo = $this->rpc->getmininginfo();
+					$res["blocks"] = arraySafeVal($miningInfo,"blocks");
+					$res["difficulty"] = arraySafeVal($miningInfo,"difficulty");
+					$res["testnet"] = "main" != arraySafeVal($miningInfo,"chain");
+					$walletInfo = $this->rpc->getwalletinfo();
+					$res["walletversion"] = arraySafeVal($walletInfo,"walletversion");
+					$res["balance"] = arraySafeVal($walletInfo,"balance");
+					$res["keypoololdest"] = arraySafeVal($walletInfo,"keypoololdest");
+					$res["keypoolsize"] = arraySafeVal($walletInfo,"keypoolsize");
+					$res["paytxfee"] = arraySafeVal($walletInfo,"paytxfee");
+					$networkInfo = $this->rpc->getnetworkinfo();
+					$res["version"] = arraySafeVal($networkInfo,"version");
+					$res["protocolversion"] = arraySafeVal($networkInfo,"protocolversion");
+					$res["timeoffset"] = arraySafeVal($networkInfo,"timeoffset");
+					$res["connections"] = arraySafeVal($networkInfo,"connections");
+//                    			$res["proxy"] = arraySafeVal($networkInfo,"networks")[0]["proxy"];
+					$res["relayfee"] = arraySafeVal($networkInfo,"relayfee");
+				}
+				break;
+			default:
+				$res = $this->rpc->__call($method,$params);
+        	}
+
 		$this->error = $this->rpc->error;
 		return $res;
 	}

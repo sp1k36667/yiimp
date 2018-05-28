@@ -30,7 +30,7 @@ function coinsmarkets_api_query($method)
 
 function coinsmarkets_api_user($method, $params='')
 {
-	require_once('/etc/yiimp/keys.php');
+	require_once('/var/www/web/keys.php');
 	if (!defined('EXCH_COINMARKETS_PASS')) define('EXCH_COINMARKETS_PASS', '');
 
 	$user = EXCH_COINMARKETS_USER;

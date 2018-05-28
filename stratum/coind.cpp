@@ -139,6 +139,8 @@ bool coind_validate_address(YAAMP_COIND *coind)
 	if (!base58_decode(coind->wallet, coind->script_pubkey))
 		stratumlog("Warning: unable to decode %s %s script pubkey\n", coind->symbol, coind->wallet);
 
+	coind->p2sh_address = json_get_bool(json_result, "isscript");
+
 	// if base58 decode fails
 	if (!strlen(coind->script_pubkey)) {
 		const char *pk = json_get_string(json_result, "scriptPubKey");
@@ -165,7 +167,6 @@ void coind_init(YAAMP_COIND *coind)
 	strcpy(account, coind->account);
 	if(!strcmp(coind->rpcencoding, "DCR")) {
 		coind->usegetwork = true;
-		//coind->noblocknotify = true;
 		//sprintf(account, "default");
 	}
 

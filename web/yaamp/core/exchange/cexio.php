@@ -24,7 +24,7 @@ function cexio_api_query($method, $params='')
 
 function cexio_api_user($method, $params=array())
 {
-	require_once('/etc/yiimp/keys.php');
+	require_once('/var/www/web/keys.php');
 	if (!defined('EXCH_CEXIO_KEY')) return false;
 	if (!defined('EXCH_CEXIO_SECRET')) return false;
 	if (!defined('EXCH_CEXIO_ID')) return false;

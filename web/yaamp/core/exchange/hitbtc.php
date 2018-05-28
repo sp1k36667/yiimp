@@ -28,7 +28,7 @@ function hitbtc_api_query($method, $params='', $returnType='object')
 
 function hitbtc_api_user($method, $params=NULL)
 {
-	require_once('/etc/yiimp/keys.php');
+	require_once('/var/www/web/keys.php');
 	if (!defined('EXCH_HITBTC_SECRET')) define('EXCH_HITBTC_SECRET', '');
 
 	if (empty(EXCH_HITBTC_KEY) || empty(EXCH_HITBTC_SECRET)) return false;

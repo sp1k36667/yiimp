@@ -4,10 +4,13 @@ function yaamp_get_algos()
 {
 	/* Toggle Site Algos Here */
 	return array(
+		'blake2b',
+		/*
 		'sha256',
 		'sha256t',
 		'scrypt',
 		'scryptn',
+		'allium',
 		'argon2',
 		'bastion',
 		'bitcore',
@@ -18,6 +21,7 @@ function yaamp_get_algos()
 		'deep',
 		'hmq1725',
 		'keccak',
+		'keccakc',
 		'jha',
 		'hsr',
 		'lbry',
@@ -34,10 +38,12 @@ function yaamp_get_algos()
 		'c11',
 		'x11',
 		'x11evo',
+		'x12',
 		'x13',
 		'x14',
 		'x15',
 		'x16r',
+		'x16s',
 		'x17',
 		'xevan',
 		'groestl', // dmd-gr -m 256 (deprecated)
@@ -51,13 +57,16 @@ function yaamp_get_algos()
 		'skunk',
 		'timetravel',
 		'tribus',
+		'a5a',
 		'vanilla',
 		'veltor',
 		'velvet',
+		'vitalium',
 		'yescrypt',
 		'yescryptR16',
+		'yescryptR32',
 		'whirlpool',
-		'zr5',
+		'zr5',*/
 	);
 }
 
@@ -111,6 +120,7 @@ function yaamp_get_algo_norm($algo)
 		'whirlpool'	=> 1.0,
 		'yescrypt'	=> 1.0,
 		'yescryptR16'	=> 1.0,
+		'yescryptR32'	=> 1.0,
 		'zr5'		=> 1.0,
 	);
 
@@ -133,15 +143,19 @@ function getAlgoColors($algo)
 		'deep'		=> '#e0ffff',
 		'x11'		=> '#f0f0a0',
 		'x11evo'	=> '#c0f0c0',
+		'x12'		=> '#ffe090',
 		'x13'		=> '#ffd880',
 		'x14'		=> '#f0c080',
 		'x15'		=> '#f0b080',
 		'x16r'		=> '#f0b080',
+		'x16s'		=> '#f0b080',
 		'x17'		=> '#f0b0a0',
 		'xevan'         => '#f0b0a0',
+		'allium'	=> '#80a0d0',
 		'argon2'	=> '#e0d0e0',
 		'bastion'	=> '#e0b0b0',
 		'blake'		=> '#f0f0f0',
+		'blake2b'	=> '#f0f0f0',
 		'blakecoin'	=> '#f0f0f0',
 		'groestl'	=> '#d0a0a0',
 		'jha'		=> '#a0d0c0',
@@ -150,6 +164,7 @@ function getAlgoColors($algo)
 		'hmq1725'	=> '#ffa0a0',
 		'hsr'		=> '#aa70ff',
 		'keccak'	=> '#c0f0c0',
+		'keccakc'	=> '#c0f0c0',
 		'lbry'		=> '#b0d0e0',
 		'luffa'		=> '#a0c0c0',
 		'm7m'		=> '#d0a0a0',
@@ -169,11 +184,14 @@ function getAlgoColors($algo)
 		'bitcore'	=> '#f790c0',
 		'skunk'		=> '#dedefe',
 		'tribus'	=> '#c0d0d0',
+		'a5a'		=> '#f0f0f0',
 		'vanilla'	=> '#f0f0f0',
 		'velvet'	=> '#aac0cc',
+		'vitalium'	=> '#f0b0a0',
 		'whirlpool'	=> '#d0e0e0',
 		'yescrypt'	=> '#e0d0e0',
 		'yescryptR16'	=> '#e2d0e2',
+		'yescryptR32'	=> '#e2d0d2',
 		'zr5'		=> '#d0b0d0',
 
 		'MN'		=> '#ffffff', // MasterNode Earnings
@@ -199,9 +217,11 @@ function getAlgoPort($algo)
 		'deep'		=> 3535,
 		'x11'		=> 3533,
 		'x11evo'	=> 3553,
+		'x12'		=> 3233,
 		'x13'		=> 3633,
 		'x15'		=> 3733,
 		'x16r'		=> 3636,
+		'x16s'		=> 3663,
 		'x17'		=> 3737,
 		'xevan'		=> 3739,
 		'hmq1725'	=> 3747,
@@ -212,6 +232,7 @@ function getAlgoPort($algo)
 		'neoscrypt'	=> 4233,
 		'argon2'	=> 4234,
 		'scryptn'	=> 4333,
+		'allium'	=> 4443,
 		'lyra2'		=> 4433,
 		'lyra2v2'	=> 4533,
 		'lyra2z'	=> 4553,
@@ -221,6 +242,7 @@ function getAlgoPort($algo)
 		'skein'		=> 4933,
 		'sib'		=> 5033,
 		'keccak'	=> 5133,
+		'keccakc'	=> 5134,
 		'skein2'	=> 5233,
 		//'groestl'	=> 5333,
 		'dmd-gr'	=> 5333,
@@ -229,6 +251,7 @@ function getAlgoPort($algo)
 		// 5555 to 5683 reserved
 		'blake'		=> 5733,
 		'blakecoin'	=> 5743,
+		'blake2b'   => 3333,
 		'decred'	=> 3252,
 		'vanilla'	=> 5755,
 		'blake2s'	=> 5766,
@@ -237,14 +260,17 @@ function getAlgoPort($algo)
 		'm7m'		=> 6033,
 		'veltor'	=> 5034,
 		'velvet'	=> 6133,
+		'vitalium'	=> 3233,
 		'yescrypt'	=> 6233,
 		'yescryptR16'	=> 6333,
+		'yescryptR32'	=> 6343,
 		'bastion'	=> 6433,
 		'hsr'		=> 7433,
 		'phi'		=> 8333,
 		'polytimos'	=> 8463,
 		'skunk'		=> 8433,
 		'tribus'	=> 8533,
+	        'a5a'   	=> 8633,
 	);
 
 	global $configCustomPorts;
@@ -262,7 +288,7 @@ function getAlgoPort($algo)
 function yaamp_fee($algo)
 {
 	$fee = controller()->memcache->get("yaamp_fee-$algo");
-	if($fee) return $fee;
+	if($fee && is_numeric($fee)) return (float) $fee;
 
 /*	$norm = yaamp_get_algo_norm($algo);
 	if($norm == 0) $norm = 1;

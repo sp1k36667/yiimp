@@ -17,7 +17,7 @@ class CcexAPI
 
 	protected function jsonQueryAuth($url)
 	{
-		require_once('/etc/yiimp/keys.php');
+		require_once('/var/www/web/keys.php');
 		if (!defined('EXCH_CCEX_SECRET')) define('EXCH_CCEX_SECRET', '');
 		if (empty(EXCH_CCEX_SECRET)) return false;
 

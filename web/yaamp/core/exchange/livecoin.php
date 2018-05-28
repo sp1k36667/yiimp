@@ -8,7 +8,7 @@ class LiveCoinApi
 
 	protected function jsonAuth($url, $params=array(), $post=false)
 	{
-		require_once('/etc/yiimp/keys.php');
+		require_once('/var/www/web/keys.php');
 		if (!defined('EXCH_LIVECOIN_SECRET')) {
 			define('EXCH_LIVECOIN_SECRET', '');
 		}

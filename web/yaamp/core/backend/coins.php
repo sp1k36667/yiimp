@@ -140,12 +140,13 @@ function BackendCoinsUpdate()
 					$coin->charity_amount = $template['_V2']/100000000;
 
 				if(isset($template['payee_amount']) && $coin->symbol != 'LIMX') {
-					$coin->charity_amount = $template['payee_amount']/100000000;
+					$coin->charity_amount = doubleval($template['payee_amount'])/100000000;
 					$coin->reward -= $coin->charity_amount;
 				}
 
 				else if(isset($template['masternode']) && arraySafeVal($template,'masternode_payments_enforced')) {
-					$coin->reward -= arraySafeVal($template['masternode'],'amount',0)/100000000;
+					if (arraySafeVal($template,'masternode_payments_started'))
+						$coin->reward -= arraySafeVal($template['masternode'],'amount',0)/100000000;
 					$coin->hasmasternodes = true;
 				}
 
@@ -170,6 +171,11 @@ function BackendCoinsUpdate()
 			else if ($coin->rpcencoding == 'GETH' || $coin->rpcencoding == 'NIRO')
 			{
 				$coin->auto_ready = ($coin->connections > 0);
+			}
+
+			else if ($coin->rpcencoding == 'SC')
+			{
+				$coin->reward = 300000 - $template['height'];
 			}
 
 			else if(strcasecmp($remote->error, 'method not found') == 0)
@@ -246,7 +252,11 @@ function BackendCoinsUpdate()
 			$coin->last_network_found = time();
 		}
 
-		$coin->version = substr($info['version'], 0, 32);
+		if ($coin->rpcencoding == 'SC') {
+			$coin->version = $remote->getversion();
+		} else {
+			$coin->version = substr($info['version'], 0, 32);
+		}
 		$coin->block_height = $info['blocks'];
 
 		if($coin->powend_height > 0 && $coin->block_height > $coin->powend_height) {

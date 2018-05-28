@@ -15,7 +15,7 @@ if(!$user || $user->is_locked) return;
 $count = getparam('count');
 $count = $count? $count: 50;
 
-WriteBoxHeader("Last $count Earnings: $user->username");
+WriteBoxHeader("Last $count Earnings: "); // $user->username
 $earnings = getdbolist('db_earnings', "userid=$user->id order by create_time desc limit :count", array(':count'=>$count));
 
 echo <<<EOT

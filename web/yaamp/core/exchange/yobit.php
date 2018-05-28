@@ -31,7 +31,7 @@ function yobit_api_query($method)
 
 function yobit_api_query2($method, $req = array())
 {
-	require_once('/etc/yiimp/keys.php');
+	require_once('/var/www/web/keys.php');
 	if (!defined('EXCH_YOBIT_SECRET')) define('EXCH_YOBIT_SECRET', '');
 
 	if (empty(EXCH_YOBIT_SECRET)) return FALSE;

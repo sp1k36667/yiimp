@@ -1,5 +1,5 @@
 <?php
-/* Sample config file to put in /etc/yiimp/keys.php */
+/* Sample config file to put in /var/www/web/keys.php */
 
 define('YIIMP_MYSQLDUMP_USER', 'root');
 define('YIIMP_MYSQLDUMP_PASS', '<my_mysql_password>');

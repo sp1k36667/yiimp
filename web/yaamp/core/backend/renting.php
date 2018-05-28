@@ -13,8 +13,9 @@ function BackendRentingUpdate()
 	foreach(yaamp_get_algos() as $algo)
 	{
 		$rent = dboscalar("select rent from hashrate where algo=:algo order by time desc limit 1", array(':algo'=>$algo));
-
-		dborun("update jobs set active=true where ready and price>$rent and algo=:algo", array(':algo'=>$algo));
+		if(empty($rent))
+		  $rent = 0;
+		dborun("update jobs set active=true where ready and price>{$rent} and algo=:algo", array(':algo'=>$algo));
 		dborun("update jobs set active=false where active and price<$rent and algo=:algo", array(':algo'=>$algo));
 	}
 

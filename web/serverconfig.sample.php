@@ -3,7 +3,7 @@
 ini_set('date.timezone', 'UTC');
 
 define('YAAMP_LOGS', '/var/log');
-define('YAAMP_HTDOCS', '/var/web');
+define('YAAMP_HTDOCS', '/var/www/web');
 define('YAAMP_BIN', '/var/bin');
 
 define('YAAMP_DBHOST', 'localhost');
@@ -11,8 +11,10 @@ define('YAAMP_DBNAME', 'yaamp');
 define('YAAMP_DBUSER', 'root');
 define('YAAMP_DBPASSWORD', 'password');
 
+define('YAAMP_MEMCACHEHOST', '127.0.0.1');
+
 define('YAAMP_PRODUCTION', true);
-define('YAAMP_RENTAL', true);
+define('YAAMP_RENTAL', false);
 define('YAAMP_LIMIT_ESTIMATE', false);
 
 define('YAAMP_FEES_MINING', 0.5);
@@ -36,8 +38,9 @@ define('YAAMP_SITE_NAME', 'YiiMP');
 define('YAAMP_ADMIN_EMAIL', 'yiimp@spam.la');
 define('YAAMP_ADMIN_IP', ''); // samples: "80.236.118.26,90.234.221.11" or "10.0.0.1/8"
 define('YAAMP_ADMIN_WEBCONSOLE', true);
-define('YAAMP_NOTIFY_NEW_COINS', true);
-define('YAAMP_DEFAULT_ALGO', 'x11');
+define('YAAMP_CREATE_NEW_COINS', true);
+define('YAAMP_NOTIFY_NEW_COINS', false);
+define('YAAMP_DEFAULT_ALGO', 'blake2b');
 
 define('YAAMP_USE_NGINX', false);
 

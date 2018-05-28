@@ -4,7 +4,7 @@
 
 function bleutrade_api_query($method, $params='')
 {
-	require_once('/etc/yiimp/keys.php');
+	require_once('/var/www/web/keys.php');
 	if (!defined('EXCH_BLEUTRADE_SECRET')) define('EXCH_BLEUTRADE_SECRET', '');
 
 	// optional secret key
@@ -40,7 +40,7 @@ function bleutrade_api_query($method, $params='')
 
 	if(!is_object($obj)) {
 		$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		debuglog("bleutrade: $method failed ($status) ".strip_data($data).' '.curl_error($ch));
+		// debuglog("bleutrade: $method failed ($status) ".strip_data($data).' '.curl_error($ch));
 	}
 
 	curl_close($ch);

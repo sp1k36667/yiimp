@@ -2,7 +2,7 @@
 
 function bittrex_api_query($method, $params='')
 {
-	require_once('/etc/yiimp/keys.php');
+	require_once('/var/www/web/keys.php');
 	if (!defined('EXCH_BITTREX_SECRET')) define('EXCH_BITTREX_SECRET', '');
 
 	// optional secret key

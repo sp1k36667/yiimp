@@ -99,14 +99,13 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600)." hours";
 </ul>
 </div></div><br>
 
-<!--  -->
-
+<!--
 <a class="twitter-timeline" href="https://twitter.com/hashtag/YAAMP" data-widget-id="617405893039292417" data-chrome="transparent" height="450px" data-tweet-limit="3" data-aria-polite="polite">Tweets about #YAAMP</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
+-->
 </td><td valign=top>
 
-<!--  -->
 
 <div id='pool_current_results'>
 <br><br><br><br><br><br><br><br><br><br>
@@ -118,9 +117,6 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600)." hours";
 
 </td></tr></table>
 
-<br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br>
 
 <script>
