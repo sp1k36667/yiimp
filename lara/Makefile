@@ -1,5 +1,7 @@
 up:
-	docker-compose up -d nginx memcached mysql
+	docker-compose up -d nginx memcached
+down:
+	docker-compose stop
 in:
 	docker-compose exec php-fpm bash
 w:
