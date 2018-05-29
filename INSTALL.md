@@ -94,8 +94,8 @@ then configure the keys file
 
 then configure the web app
 ---
-> sudo mv /var/web/serverconfig.sample.php /var/web/serverconfig.php  
-> sudo vim /var/web/serverconfig.php  
+> sudo mv /var/web/serverconfig.sample.php /var/web/serverconfig.php
+> sudo vim /var/web/serverconfig.php
 > ... need to change YAAMP_DBNAME, YAAMP_DBUSER, and YAAMP_DBPASSWORD
 > ... also set YAAMP_RENTAL to false, YAAMP_SITE_NAME to preferred name, and configure YAAMP_ADMIN_EMAIL and YAAMP_ADMIN_IP
 
