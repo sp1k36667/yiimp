@@ -56,8 +56,8 @@ services:
         - applications
       extra_hosts:
         - "dockerhost:${DOCKER_HOST_IP}"
-      ports:
-        - "${WORKSPACE_SSH_PORT}:22"
+#      ports:
+#        - "${WORKSPACE_SSH_PORT}:22"
       tty: true
       networks:
         - frontend
@@ -385,8 +385,8 @@ services:
       build: ./memcached
       volumes:
         - ${DATA_SAVE_PATH}/memcached:/var/lib/memcached
-      ports:
-        - "${MEMCACHED_HOST_PORT}:11211"
+#      ports:
+#        - "${MEMCACHED_HOST_PORT}:11211"
       depends_on:
         - php-fpm
       networks:
