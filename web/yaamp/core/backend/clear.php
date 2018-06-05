@@ -2,7 +2,7 @@
 
 function BackendClearEarnings($coinid = NULL)
 {
-	debuglog(__FUNCTION__);
+	// debuglog(__FUNCTION__);
 
 	if (YAAMP_ALLOW_EXCHANGE)
 		$delay = time() - (int) YAAMP_PAYMENTS_FREQ;
