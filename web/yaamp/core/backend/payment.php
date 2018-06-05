@@ -324,5 +324,3 @@ function BackendCoinPayments($coin)
 	}
 
 }
-
-
