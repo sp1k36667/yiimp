@@ -12,9 +12,9 @@ function BackendClearEarnings($coinid = NULL)
 	// $delay = time();
 
 	$sqlFilter = $coinid ? " AND coinid=".intval($coinid) : '';
-	debuglog("status=1 AND mature_time<$delay $sqlFilter");
+
 	$list = getdbolist('db_earnings', "status=1 AND mature_time<$delay $sqlFilter");
-	debuglog($list);
+
 	foreach($list as $earning)
 	{
 		$user = getdbo('db_accounts', $earning->userid);
