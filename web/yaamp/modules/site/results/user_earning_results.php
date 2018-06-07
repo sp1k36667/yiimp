@@ -18,6 +18,8 @@ $count = $count? $count: 50;
 WriteBoxHeader("Last $count Earnings: "); // $user->username
 $earnings = getdbolist('db_earnings', "userid=$user->id order by create_time desc limit :count", array(':count'=>$count));
 
+if(!YAAMP_USE_PPS) {
+
 echo <<<EOT
 
 <style type="text/css">
@@ -117,6 +119,65 @@ echo "</table>";
 
 echo "<br></div></div><br>";
 
+} else {
 
+echo <<<EOT
+
+<style type="text/css">
+span.block { padding: 2px; display: inline-block; text-align: center; min-width: 75px; border-radius: 3px; }
+span.block.invalid  { color: white; background-color: #d9534f; }
+span.block.immature { color: white; background-color: #f0ad4e; }
+span.block.exchange { color: white; background-color: #5cb85c; }
+span.block.cleared  { color: white; background-color: gray; }
+</style>
+
+<table class="dataGrid2">
+<thead>
+<tr>
+<td></td>
+<th>Name</th>
+<th align=right>Amount</th>
+<th align=right>Time</th>
+<th align=right>Status</th>
+</tr>
+</thead>
+
+EOT;
+
+foreach($earnings as $earning)
+{
+	$coin = getdbo('db_coins', $earning->coinid);
+
+	$d = datetoa2($earning->create_time);
+
+	echo '<tr class="ssrow">';
+	echo '<td width="18"><img width="16" src="'.$coin->image.'"></td>';
+	echo '<td><span style="font-size: .8em;"> ('.$coin->algo.')</span></td>';
+	echo '<td align="right" style="font-size: .8em;"><b>'.$earning->amount.' '.$coin->symbol_show.'</b></td>';
+	echo '<td align="right" style="font-size: .8em;">'.$d.'&nbsp;ago</td>';
+	echo '<td align="right" style="font-size: .8em;">';
+
+	if($earning->status == 0) {
+		echo '<span class="block immature">Immature</span>';
+	}
+
+	else if($earning->status == 1)
+		echo '<span class="block exchange">'.(YAAMP_ALLOW_EXCHANGE ? 'Exchange' : 'Confirmed').'</span>';
+
+	else if($earning->status == 2)
+		echo '<span class="block cleared">Cleared</span>';
+
+	else if($earning->status == -1)
+		echo '<span class="block invalid">Invalid</span>';
+
+	echo "</td>";
+	echo "</tr>";
+}
+
+echo "</table>";
+
+echo "<br></div></div><br>";
+
+}
 
 
