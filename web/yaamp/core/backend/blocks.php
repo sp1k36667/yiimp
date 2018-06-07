@@ -81,15 +81,16 @@ function BackendBlockNew($coin, $db_block)
 }
 
 function BackendSharesNew() {
-	// debuglog(__METHOD__);
+	debuglog(__METHOD__);
 
 	$coin = getdbo('db_coins', 1316);
+	$target = yaamp_hashrate_constant($coin->algo);
 	// caculate shares group by user, add new earnings for them
 	$sqlCond = "valid = 1 AND status=0";
 	// TODO: seems difficulty we give miner is different from the one that Sia api use for block
-	$list = dbolist("SELECT userid, SUM(100*difficulty/block_difficulty*reward) AS total FROM shares WHERE $sqlCond AND algo=:algo GROUP BY userid",
+	$list = dbolist("SELECT userid, SUM(share_reward) AS total FROM shares WHERE $sqlCond AND algo=:algo GROUP BY userid",
 	array(':algo'=>$coin->algo));
-	// debuglog($list);
+
 	foreach($list as $item)
 	{
 		$amount = $item['total'];
