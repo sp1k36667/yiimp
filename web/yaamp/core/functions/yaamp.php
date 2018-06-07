@@ -332,7 +332,7 @@ function yaamp_hashrate_constant($algo=null)
 
 function yaamp_hashrate_step()
 {
-	return 300;
+	return 60;
 }
 
 function yaamp_profitability($coin)
