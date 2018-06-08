@@ -95,7 +95,7 @@ function showPageHeader()
 	showItemHeader(controller()->id=='stats', '/stats', 'Graphs');
 	showItemHeader($action=='miners', '/site/miners', 'Miners');
 	if (YIIMP_PUBLIC_EXPLORER)
-		showItemHeader(false, 'https://explorer.siahub.info/', 'Explorer');
+		showItemHeader(false, 'https://siastats.info/navigator', 'Explorer');
 
 	if (YIIMP_PUBLIC_BENCHMARK)
 		showItemHeader(controller()->id=='bench', '/bench', 'Benchs');
