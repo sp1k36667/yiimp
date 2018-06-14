@@ -81,10 +81,10 @@ if(count($workers))
 	echo "<tr>";
 	echo "<th align=left>Name</th>";
 	if ($this->admin) echo "<th>PID</th>";
-	echo "<th align=left>Pool</th>";
+	// echo "<th align=left>Extra</th>";
 	echo "<th align=left>Algo</th>";
-	echo "<th align=right>Diff</th>";
-	echo "<th align=right title='extranonce.subscribe'>ES**</th>";
+	// echo "<th align=right>Diff</th>";
+	// echo "<th align=right title='extranonce.subscribe'>ES**</th>";
 	echo "<th align=right width=80>Hashrate*</th>";
 	echo "<th align=right width=60>Reject*</th>";
 	echo "</tr>";
@@ -110,10 +110,10 @@ if(count($workers))
 		echo '<tr class="ssrow">';
 		echo '<td title="'.$worker->worker.'">'.$name.'</td>';
 		if ($this->admin) echo "<td>{$worker->pid}</td>";
-		echo '<td title="'.$worker->password.'">'.$password.'</td>';
+		// echo '<td title="'.$worker->password.'">'.$password.'</td>';
 		echo '<td>'.$worker->algo.'</td>';
-		echo '<td align="right">'.$worker->difficulty.'</td>';
-		echo '<td align="right">'.$subscribe.'</td>';
+		// echo '<td align="right">'.$worker->difficulty.'</td>';
+		// echo '<td align="right">'.$subscribe.'</td>';
 		echo '<td align="right">'.$user_rate1.'</td>';
 		echo '<td align="center" title="'.$percent.'">'.$user_rejects.'</td>';
 		echo '</tr>';
