@@ -39,7 +39,7 @@ echo <<<end
 <th data-sorter="" width="20"></th>
 <th data-sorter="text">Coin</th>
 <th data-sorter="text">Address</th>
-<th data-sorter="text">Pass</th>
+<th data-sorter="text">PID</th>
 <th data-sorter="text">Client</th>
 <th data-sorter="text">Version</th>
 <th data-sorter="numeric">Hashrate</th>
@@ -94,7 +94,7 @@ foreach($workers as $worker)
 	echo '<td width="20">'.$coinimg.'</td>';
 	echo '<td><b>'.$coinlink.'</b>'.($coinsym ? '&nbsp;('.$coinsym.')':'-').'</td>';
 	echo "<td><a href='/?address=$worker->name'><b>$worker->name</b></a></td>";
-	echo "<td>$worker->password</td>";
+	echo "<td>$worker->pid</td>";
 	echo "<td title='$worker->ip'>$dns</td>";
 	echo "<td>$worker->version</td>";
 	echo "<td data=\"$user_rate\">$user_rate_h</td>";

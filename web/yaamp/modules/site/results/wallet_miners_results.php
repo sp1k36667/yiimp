@@ -79,9 +79,9 @@ if(count($workers))
 	echo "<table  class='dataGrid2'>";
 	echo "<thead>";
 	echo "<tr>";
-	echo "<th align=left>Details</th>";
-	if ($this->admin) echo "<th>IP</th>";
-	echo "<th align=left>Extra</th>";
+	echo "<th align=left>Name</th>";
+	if ($this->admin) echo "<th>PID</th>";
+	echo "<th align=left>Pool</th>";
 	echo "<th align=left>Algo</th>";
 	echo "<th align=right>Diff</th>";
 	echo "<th align=right title='extranonce.subscribe'>ES**</th>";
@@ -102,14 +102,14 @@ if(count($workers))
 
 		$user_rate1 = $user_rate1? Itoa2($user_rate1).'h/s': '';
 
-		$version = substr($worker->version, 0, 20);
+		$name = substr($worker->worker, 0, 20);
 		$password = substr($worker->password, 0, 32);
 
 		$subscribe = Booltoa($worker->subscribe);
 
 		echo '<tr class="ssrow">';
-		echo '<td title="'.$worker->version.'">'.$version.'</td>';
-		if ($this->admin) echo "<td>{$worker->ip}</td>";
+		echo '<td title="'.$worker->worker.'">'.$name.'</td>';
+		if ($this->admin) echo "<td>{$worker->pid}</td>";
 		echo '<td title="'.$worker->password.'">'.$password.'</td>';
 		echo '<td>'.$worker->algo.'</td>';
 		echo '<td align="right">'.$worker->difficulty.'</td>';
@@ -125,7 +125,7 @@ if(count($workers))
 echo "</div>";
 
 echo "<p style='font-size: .8em'>
-		&nbsp;* approximate from the last 5 minutes submitted shares<br>
+		&nbsp;* approximate from the last 3 minutes submitted shares<br>
 		&nbsp;** extranonce.subscribe<br>
 		</p>";
 
