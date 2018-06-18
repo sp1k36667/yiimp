@@ -85,7 +85,9 @@ foreach($list as $coin)
 
 	$btcmhd = yaamp_profitability($coin);
 	$pool_hash = yaamp_coin_rate($coin->id);
-	$real_ttf = $pool_hash? $coin->difficulty * 0x100000000 / $pool_hash: 0;
+	// $real_ttf = $pool_hash? $coin->difficulty * 0x100000000 / $pool_hash: 0;
+	// swich old algo to block_diff / pool_hash
+	$real_ttf = $pool_hash? $coin->difficulty / $pool_hash: 0;
 
 	$pool_hash_sfx = $pool_hash? Itoa2($pool_hash).'h/s': '';
 	$real_ttf = $real_ttf? sectoa2($real_ttf): '';
