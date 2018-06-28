@@ -2,17 +2,6 @@
 
 ## Get the webserver up and running
 
-build stratum server binary
----
-> cd stratum/iniparser
-> make
-> cd ..
-> make
-> cd ..
-> cd blocknotify
-> make
-> cd ..
-
 install stratum and webserver dependencies
 ---
 > sudo apt install php php-curl libcurl4-openssl-dev php-mysql php-memcache mysql-server libmysqlclient-dev nginx memcached screen libldap2-dev libidn11-dev librtmp-dev libkrb5-dev sendmail
