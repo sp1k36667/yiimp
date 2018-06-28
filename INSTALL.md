@@ -161,19 +161,29 @@ run docker
 > cd yiimplara
 > make up
 
-go into php-fpm container
+run mysql container(optional, might be conflict with local mysql port)
+---
+> cd lara
+> docker-compose up -d mysql
+
+load mysql data to mysql container database
+---
+> mysql -uroot -proot < sql/{newestsqlfile}
+
+copy and change web configs
+---
+> cd web
+> cp keys.sample.php keys.php
+> cp serverconfig.sample.php serverconfig.php
+> (change both config file)
+
+open browser and checkout php-fpm/nginx/web/php-runtime logs
+---
+> docker-compose logs -f php-fpm
+> docker-compose logs -f nginx
+> tail -f ./logs/web/debug.log
+> tail -f ./web/yaamp/runtime/application.log
+
+go into php-fpm container (could run php codes)
 ---
 > make in
-
-load sql in container
----
-> cd /var/www/sql
-> ./load-sql.sh
-
-open browser at http://localhost:2080
----
-> open http://localhost:2080
-
-view debug.log at /var/www/web/log/debug.log
----
-> tail -f web/log/debug.log
