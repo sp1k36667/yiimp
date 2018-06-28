@@ -2,16 +2,17 @@
 
 ## Get the webserver up and running
 
-build stratum server binary
----
-> cd stratum/iniparser
-> make
-> cd ..
-> make
-> cd ..
-> cd blocknotify
-> make
-> cd ..
+[//]: # These are the old instructions for compiling the C stratum, not sure why I left them here
+[//]: # build stratum server binary
+[//]: # ---
+[//]: # > cd stratum/iniparser
+[//]: # > make
+[//]: # > cd ..
+[//]: # > make
+[//]: # > cd ..
+[//]: # > cd blocknotify
+[//]: # > make
+[//]: # > cd ..
 
 install stratum and webserver dependencies
 ---
