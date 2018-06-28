@@ -137,7 +137,7 @@ configure and run Sia stratum server
 
 copy and change docker env
 ---
-> cd yiimplara
+> cd lara
 > cp env-example .env
 > vi .env (change mysql part)
 
@@ -147,7 +147,7 @@ create rpc external network
 
 run docker
 ---
-> cd yiimplara
+> cd lara
 > make up
 
 run mysql container(optional, might be conflict with local mysql port)
