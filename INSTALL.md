@@ -2,18 +2,6 @@
 
 ## Get the webserver up and running
 
-[comment]: <> These are the old instructions for compiling the C stratum, not sure why I left them here
-[comment]: <> build stratum server binary
-[comment]: <> ---
-[comment]: <> > cd stratum/iniparser
-[comment]: <> > make
-[comment]: <> > cd ..
-[comment]: <> > make
-[comment]: <> > cd ..
-[comment]: <> > cd blocknotify
-[comment]: <> > make
-[comment]: <> > cd ..
-
 install stratum and webserver dependencies
 ---
 > sudo apt install php php-curl libcurl4-openssl-dev php-mysql php-memcache mysql-server libmysqlclient-dev nginx memcached screen libldap2-dev libidn11-dev librtmp-dev libkrb5-dev sendmail
