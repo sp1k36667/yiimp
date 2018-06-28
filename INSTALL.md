@@ -157,7 +157,10 @@ run mysql container(optional, might be conflict with local mysql port)
 
 load mysql data to mysql container database
 ---
-> mysql -uroot -proot < sql/{newestsqlfile}
+> make in                                       (go into php-fpm container)
+> apt-get update
+> apt-get install mysql-client -y
+> mysql -uroot -proot -hmysql < sql/{newestsqlfile}
 
 copy and change web configs
 ---
