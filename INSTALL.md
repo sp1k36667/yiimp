@@ -169,6 +169,12 @@ copy and change web configs
 	cp serverconfig.sample.php serverconfig.php
 	(change both config file)
 
+change config permissions
+---
+	make in
+	chown www-data:www-data web/serverconfig.php
+	chown www-data:www-data web/keys.php
+
 open browser and checkout php-fpm/nginx/web/php-runtime logs
 ---
 	docker-compose logs -f php-fpm

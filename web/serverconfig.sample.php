@@ -2,7 +2,7 @@
 
 ini_set('date.timezone', 'UTC');
 
-define('YAAMP_LOGS', '/var/log');
+define('YAAMP_LOGS', '/var/www/web/log');
 define('YAAMP_HTDOCS', '/var/www/web');
 define('YAAMP_BIN', '/var/bin');
 
@@ -11,13 +11,13 @@ define('YAAMP_DBNAME', 'yaamp');
 define('YAAMP_DBUSER', 'root');
 define('YAAMP_DBPASSWORD', 'password');
 
-define('YAAMP_MEMCACHEHOST', '127.0.0.1');
+define('YAAMP_MEMCACHEHOST', 'memcached');
 
 define('YAAMP_PRODUCTION', true);
 define('YAAMP_RENTAL', false);
 define('YAAMP_LIMIT_ESTIMATE', false);
 
-define('YAAMP_USE_PPS', false);
+define('YAAMP_USE_PPS', true);
 
 define('YAAMP_FEES_MINING', 0.5);
 define('YAAMP_FEES_EXCHANGE', 2);
