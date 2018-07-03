@@ -111,8 +111,8 @@ add the following to your ~/.bashrc
 
 build Sia stratum server
 ---
-	go get -u github.com/ToastPool/Sia/...
-	mv ~/.go/src/github.com/ToastPool/Sia ~/.go/src/github.com/NebulousLabs/Sia
+	git clone https://github.com/ToastPool/Sia.git
+	mv ./Sia ~/.go/src/github.com/NebulousLabs/Sia
 	cd ~/.go/src/github.com/NebulousLabs/Sia
 	make dependencies
 	make release
