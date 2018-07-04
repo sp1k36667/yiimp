@@ -11,7 +11,7 @@ define('YAAMP_DBNAME', 'yaamp');
 define('YAAMP_DBUSER', 'root');
 define('YAAMP_DBPASSWORD', 'password');
 
-define('YAAMP_MEMCACHEHOST', 'memcached');
+define('YAAMP_MEMCACHEHOST', 'memcached'); // 'memcached' is a hostname we use for docker, you can alternatively use '127.0.0.1', etc
 
 define('YAAMP_PRODUCTION', true);
 define('YAAMP_RENTAL', false);
