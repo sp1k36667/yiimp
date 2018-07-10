@@ -163,7 +163,7 @@ class CronjobController extends CommonController
 				break;
 
 			case 3:
-				BackendPricesUpdate();
+				// BackendPricesUpdate();
 				BackendWatchMarkets();
 				break;
 

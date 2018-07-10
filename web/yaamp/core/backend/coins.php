@@ -173,7 +173,7 @@ function BackendCoinsUpdate()
 				$coin->auto_ready = ($coin->connections > 0);
 			}
 
-			else if ($coin->rpcencoding == 'SC')
+			else if ($coin->rpcencoding == 'SC'|| $coin->rpcencoding == 'SPACE')
 			{
 				$coin->reward = 300000 - $template['height'];
 			}
@@ -252,7 +252,7 @@ function BackendCoinsUpdate()
 			$coin->last_network_found = time();
 		}
 
-		if ($coin->rpcencoding == 'SC') {
+		if ($coin->rpcencoding == 'SC'|| $coin->rpcencoding == 'SPACE') {
 			$coin->version = $remote->getversion();
 		} else {
 			$coin->version = substr($info['version'], 0, 32);
