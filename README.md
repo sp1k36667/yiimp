@@ -56,13 +56,13 @@ load initial sql data
 	mysql -u yiimp -p pool < yaamp-2018-06-21-06.sql
 	cd ..
 
-setup web folder
----
-	sudo cp web/keys.sample.php /var/www/web/keys.php
-
 copy over
 ---
 	sudo cp -rf web /var/www/
+
+setup web folder
+---
+	sudo cp web/keys.sample.php /var/www/web/keys.php
 
 create sql folder
 ---
