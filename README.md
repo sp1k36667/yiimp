@@ -62,7 +62,7 @@ setup web folder
 
 copy over
 ---
-	sudo cp -rf web/ /var/www/web
+	sudo cp -rf web /var/www/
 
 create sql folder
 ---
