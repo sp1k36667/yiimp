@@ -82,6 +82,7 @@ function BackendBlockNew($coin, $db_block)
 
 function BackendSharesNew() {
 	debuglog(__METHOD__);
+	$start_time = time();
 
 	$coin = getdbo('db_coins', 1316);
 	$target = yaamp_hashrate_constant($coin->algo);
@@ -90,6 +91,7 @@ function BackendSharesNew() {
 	// TODO: seems difficulty we give miner is different from the one that Sia api use for block
 	$list = dbolist("SELECT userid, SUM(share_reward) AS total FROM shares WHERE $sqlCond AND algo=:algo GROUP BY userid",
 	array(':algo'=>$coin->algo));
+	debuglog("time after selection:".(time() -  $start_time));
 
 	foreach($list as $item)
 	{
@@ -119,6 +121,7 @@ function BackendSharesNew() {
 		$user->last_earning = time();
 		$user->save();
 		dborun("UPDATE shares SET status=1 WHERE $sqlCond AND userid=:userid", array('userid' => $item['userid']));
+		debuglog("time after user:".$item['userid']." ".(time() -  $start_time));
 	}
 
 	$delay = time() - 24*60*60; // delete SC shares older than a day
@@ -133,6 +136,7 @@ function BackendSharesNew() {
 		// [errorInfo] => array(0 => 'HY000', 1 => 1205, 2 => 'Lock wait timeout exceeded; try restarting transaction')
 		// [*:message] => 'CDbCommand failed to execute the SQL statement: SQLSTATE[HY000]: General error: 1205 Lock wait timeout exceeded; try restarting transaction'
 	}
+	debuglog("time after all: ".(time() -  $start_time));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
