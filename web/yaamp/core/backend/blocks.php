@@ -120,8 +120,9 @@ function BackendSharesNew() {
 		// record the user's last earning time
 		$user->last_earning = time();
 		$user->save();
-		dborun("UPDATE shares SET status=1 WHERE $sqlCond AND userid=:userid", array('userid' => $item['userid']));
 		debuglog("time after user:".$item['userid']." ".(time() -  $start_time));
+		dborun("UPDATE shares SET status=1 WHERE $sqlCond AND userid=:userid", array('userid' => $item['userid']));
+		debuglog("time after update shares:".$item['userid']." ".(time() -  $start_time));
 	}
 
 	$delay = time() - 24*60*60; // delete SC shares older than a day
