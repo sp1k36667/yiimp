@@ -89,9 +89,22 @@ function BackendSharesNew() {
 	// caculate shares group by user, add new earnings for them
 	$sqlCond = "valid = 1 AND status=0";
 	// TODO: seems difficulty we give miner is different from the one that Sia api use for block
-	$list = dbolist("SELECT userid, SUM(share_reward) AS total FROM shares WHERE $sqlCond AND algo=:algo GROUP BY userid",
-	array(':algo'=>$coin->algo));
+	$list = dbolist("SELECT userid, SUM(share_reward) AS total, max(id) as maxid FROM shares WHERE $sqlCond AND algo=:algo GROUP BY userid",
+		array(':algo'=>$coin->algo));
 	debuglog("time after selection:".(time() -  $start_time));
+
+	foreach($list as $item) {
+		if(empty($max_id)) {
+			$max_id = $item['maxid'];
+			continue;
+		}
+		if($max_id < $item['maxid']) {
+			$max_id = $item['maxid'];
+		}
+	}
+
+	dborun("UPDATE shares SET status=1 WHERE $sqlCond AND algo=:algo AND id<:id", array(':algo'=>$coin->algo, ':id'=>$max_id));
+	debuglog("time after update shares: ".(time() -  $start_time));
 
 	foreach($list as $item)
 	{
@@ -121,8 +134,6 @@ function BackendSharesNew() {
 		$user->last_earning = time();
 		$user->save();
 		debuglog("time after user:".$item['userid']." ".(time() -  $start_time));
-		dborun("UPDATE shares SET status=1 WHERE $sqlCond AND userid=:userid", array('userid' => $item['userid']));
-		debuglog("time after update shares:".$item['userid']." ".(time() -  $start_time));
 	}
 
 	$delay = time() - 24*60*60; // delete SC shares older than a day
