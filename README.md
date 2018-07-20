@@ -1,133 +1,178 @@
-[![Build Status](https://travis-ci.org/tpruvot/yiimp.svg?branch=next)](https://travis-ci.org/tpruvot/yiimp)
+# Ubuntu 16.04 Installation
 
-#yiimp - yaamp fork
+## Get the webserver up and running
 
-Required:
+install stratum and webserver dependencies
+---
+	sudo apt install php php-curl libcurl4-openssl-dev php-mysql php-memcache mysql-server libmysqlclient-dev nginx memcached screen libldap2-dev libidn11-dev librtmp-dev libkrb5-dev sendmail
 
-	linux, mysql, php, memcached, a webserver (lighttpd or nginx recommended)
+set up nginx
+---
+First, make sure there you have no configs already specified as "default_server" or "server_name _".
+Then, create /etc/nginx/sites-enabled/pool.conf:
 
+	server {
+	        listen 80 default_server;
+	        listen [::]:80 default_server;
 
-Config for nginx:
+	        root /var/www/web;
+	        index index.html index.htm;
 
-	location / {
-		try_files $uri @rewrite;
+	        server_name _;
+
+	        location / {
+	            try_files $uri @rewrite;
+	        }
+
+	        location @rewrite {
+	            rewrite ^/(.*)$ /index.php?r=$1;
+	        }
+
+	        location ~ \.php$ {
+	            include snippets/fastcgi-php.conf;
+	            fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+	        }
 	}
 
-	location @rewrite {
-		rewrite ^/(.*)$ /index.php?r=$1;
-	}
+restart nginx and verify that it's running
+---
+	sudo service nginx restart
+	sudo service nginx status
 
-	location ~ \.php$ {
-		fastcgi_pass unix:/var/run/php5-fpm.sock;
-		fastcgi_index index.php;
-		include fastcgi_params;
-	}
+set up sql database
+---
+	mysql>  CREATE DATABASE pool;
 
+set up sql accounts for users php and yiimp
+---
+	mysql> CREATE USER 'php'@'localhost' IDENTIFIED BY 'password';
+	mysql> GRANT ALL PRIVILEGES ON *.* TO 'php'@'localhost' WITH GRANT OPTION;
+	mysql> CREATE USER 'yiimp'@'localhost' IDENTIFIED BY 'password';
+	mysql> GRANT ALL PRIVILEGES ON *.* TO 'yiimp'@'localhost' WITH GRANT OPTION;
 
-If you use apache, it should be something like that (already set in web/.htaccess):
+load initial sql data
+---
+	cd sql
+	mysql -u yiimp -p pool < yaamp-2018-06-21-06.sql
+	cd ..
 
-	RewriteEngine on
+copy over
+---
+	sudo cp -rf web /var/www/
 
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteRule ^(.*) index.php?r=$1 [QSA]
+setup web folder
+---
+	sudo cp web/keys.sample.php /var/www/web/keys.php
 
+create sql folder
+---
+	mkdir /var/www/sql
 
-If you use lighttpd, use the following config:
+then configure the keys file
+---
+	sudo vim /var/www/web/keys.php
 
-	$HTTP["host"] =~ "yiimp.ccminer.org" {
-	        server.document-root = "/var/yaamp/web"
-	        url.rewrite-if-not-file = (
-			"^(.*)/([0-9]+)$" => "index.php?r=$1&id=$2",
-			"^(.*)\?(.*)" => "index.php?r=$1&$2",
-	                "^(.*)" => "index.php?r=$1",
-	                "." => "index.php"
-	        )
+then configure the web app
+---
+	sudo mv /var/web/serverconfig.sample.php /var/web/serverconfig.php
+	sudo vim /var/web/serverconfig.php
+	... need to change YAAMP_DBNAME, YAAMP_DBUSER, and YAAMP_DBPASSWORD
+	... also set YAAMP_RENTAL to false, YAAMP_SITE_NAME to preferred name, and configure YAAMP_ADMIN_EMAIL and YAAMP_ADMIN_IP
 
-		url.access-deny = ( "~", ".dat", ".log" )
-	}
+make sure everything works
+---
+	cd bin
+	./yiimp checkup
 
+run scripts in screen
+---
+	cd /var/www/web
+	screen
+	./main.sh
+	... switch screen ...
+	./loop2.sh
+	... switch screen ...
+	./block.sh
 
-For the database, import the initial dump present in the sql/ folder
+Now your webserver should be running! Check it in your web browser
 
-Then, apply the migration scripts to be in sync with the current git, they are sorted by date of change.
+## Get the stratum server up and running
 
-Your database need at least 2 users, one for the web site (php) and one for the stratum connections (password set in config/algo.conf).
+set up Go (must be at least 1.10)
+---
+	apt install golang-1.10
 
+add the following to your ~/.bashrc
 
+	export GOPATH=$HOME/.go
+	export PATH=$PATH:/usr/lib/go-1.10/bin:$GOPATH/bin
 
-The recommended install folder for the stratum engine is /var/stratum. Copy all the .conf files, run.sh, the stratum binary and the blocknotify binary to this folder. 
+	source ~/.bashrc
 
-Some scripts are expecting the web folder to be /var/www/web. You can use directory symlinks...
+build Sia stratum server
+---
+	git clone https://github.com/ToastPool/Sia.git
+	mv ./Sia ~/.go/src/github.com/NebulousLabs/Sia
+	cd ~/.go/src/github.com/NebulousLabs/Sia
+	make dependencies
+	make release
 
+configure and run Sia stratum server
+---
+	mkdir ~/siad_data && cd ~/siad_data
+	cp ~/.go/src/github.com/NebulousLabs/Sia/sampleconfigs/sia.yml ~/siad_data/
+	vim sia.yml
+	siad -M cgtwp
 
-Add your exchange API public and secret keys in these two separated files:
+# For docker users
 
-	/var/www/web/keys.php - fixed path in code
-	web/serverconfig.php - use sample as base...
+copy and change docker env
+---
+	cd lara
+	cp env-example .env
+	vi .env (change mysql part)
 
-You can find sample config files in web/serverconfig.sample.php and web/keys.sample.php
+create rpc external network
+---
+	docker network create rpc_net
 
-This web application includes some command line tools, add bin/ folder to your path and type "yiimp" to list them, "yiimp checkup" can help to test your initial setup.
-Future scripts and maybe the "cron" jobs will then use this yiic console interface.
+run docker
+---
+	cd lara
+	make up
 
-You need at least three backend shells (in screen) running these scripts:
+run mysql container(optional, might be conflict with local mysql port)
+---
+	cd lara
+	docker-compose up -d mysql
 
-	web/main.sh
-	web/loop2.sh
-	web/block.sh
+load mysql data to mysql container database
+---
+	make in                                       (go into php-fpm container)
+	apt-get update
+	apt-get install mysql-client -y
+	mysql -uroot -proot -hmysql < sql/{newestsqlfile}
 
-Start one stratum per algo using the run.sh script with the algo as parameter. For example, for x11:
+copy and change web configs
+---
+	cd web
+	cp keys.sample.php keys.php
+	cp serverconfig.sample.php serverconfig.php
+	(change both config file)
 
-	run.sh x11
+change config permissions
+---
+	make in
+	chown www-data:www-data web/serverconfig.php
+	chown www-data:www-data web/keys.php
 
-Edit each .conf file with proper values.
+open browser and checkout php-fpm/nginx/web/php-runtime logs
+---
+	docker-compose logs -f php-fpm
+	docker-compose logs -f nginx
+	tail -f ./logs/web/debug.log
+	tail -f ./web/yaamp/runtime/application.log
 
-Look at rc.local, it starts all three backend shells and all stratum processes. Copy it to the /etc folder so that all screen shells are started at boot up.
-
-All your coin's config files need to blocknotify their corresponding stratum using something like:
-
-	blocknotify=blocknotify yaamp.com:port coinid %s
-
-On the website, go to http://server.com/site/adminRights to login as admin. You have to change it to something different in the code (web/yaamp/modules/site/SiteController.php). A real admin login may be added later, but you can setup a password authentification with your web server, sample for lighttpd:
-
-	htpasswd -c /etc/yiimp/admin.htpasswd <adminuser>
-
-and in the lighttpd config file:
-
-	# Admin access
-	$HTTP["url"] =~ "^/site/adminRights" {
-	        auth.backend = "htpasswd"
-	        auth.backend.htpasswd.userfile = "/etc/yiimp/admin.htpasswd"
-	        auth.require = (
-	                "/" => (
-	                        "method" => "basic",
-	                        "realm" => "Yiimp Administration",
-	                        "require" => "valid-user"
-	                )
-	        )
-	}
-
-And finally remove the IP filter check in SiteController.php
-
-
-
-There are logs generated in the /var/stratum folder and /var/log/stratum/debug.log for the php log.
-
-More instructions coming as needed.
-
-
-There a lot of unused code in the php branch. Lot come from other projects I worked on and I've been lazy to clean it up before to integrate it to yaamp. It's mostly based on the Yii framework which implements a lightweight MVC.
-
-	http://www.yiiframework.com/
-
-
-Credits:
-
-Thanks to globalzon to have released the initial Yaamp source code.
-
---
-
-You can support this project donating to tpruvot :
-
-BTC : 1Auhps1mHZQpoX4mCcVL8odU81VakZQ6dR
-
+go into php-fpm container (could run php codes)
+---
+	make in
