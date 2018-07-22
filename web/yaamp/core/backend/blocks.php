@@ -82,6 +82,7 @@ function BackendBlockNew($coin, $db_block)
 
 function BackendSharesNew() {
 	debuglog(__METHOD__);
+	$start_time = time();
 	$coinids = array(1316, 1317);
 
 	foreach($coinids as $coinid) {
@@ -90,8 +91,23 @@ function BackendSharesNew() {
 		// caculate shares group by user, add new earnings for them
 		$sqlCond = "valid = 1 AND status=0";
 		// TODO: seems difficulty we give miner is different from the one that Sia api use for block
-		$list = dbolist("SELECT userid, SUM(share_reward) AS total FROM shares WHERE $sqlCond AND coinid=:coinid GROUP BY userid",
-		array(':coinid'=>$coinid));
+		$list = dbolist("SELECT userid, SUM(share_reward) AS total, max(id) as maxid FROM shares WHERE $sqlCond AND coinid=:coinid GROUP BY userid",
+			array(':coinid'=>$coinid));
+
+		foreach($list as $item) {
+			if(empty($max_id)) {
+				$max_id = $item['maxid'];
+				continue;
+			}
+			if($max_id < $item['maxid']) {
+				$max_id = $item['maxid'];
+			}
+		}
+
+		if (!empty($list)) {
+			dborun("UPDATE shares SET status=1 WHERE $sqlCond AND coinid=:coinid AND id<=:id",
+			array(':coinid'=>$coinid, ':id'=>$max_id));
+		}
 
 		foreach($list as $item)
 		{
@@ -120,7 +136,6 @@ function BackendSharesNew() {
 			// record the user's last earning time
 			$user->last_earning = time();
 			$user->save();
-			dborun("UPDATE shares SET status=1 WHERE $sqlCond AND userid=:userid", array('userid' => $item['userid']));
 		}
 
 		$delay = time() - 24*60*60; // delete SC shares older than a day
@@ -136,6 +151,7 @@ function BackendSharesNew() {
 			// [*:message] => 'CDbCommand failed to execute the SQL statement: SQLSTATE[HY000]: General error: 1205 Lock wait timeout exceeded; try restarting transaction'
 		}
 	}
+	debuglog("time after all: ".(time() -  $start_time));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////

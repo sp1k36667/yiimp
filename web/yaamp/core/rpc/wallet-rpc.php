@@ -584,7 +584,7 @@ class WalletRPC {
 				}
 				$outputs = json_encode($destinations);
 				debuglog("send many 2:" . $outputs);
-				$res = $this->rpc->rpcpost("/wallet/siacoins?outputs={$outputs}");
+				$res = $this->rpc->rpcpost("/wallet/spacecash?outputs={$outputs}");
 				$this->error = $this->rpc->error;
 				debuglog("send many 3:" . json_encode($res));
 				if ($res && isset($res['transactionids'])) {

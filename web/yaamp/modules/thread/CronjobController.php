@@ -47,7 +47,7 @@ class CronjobController extends CommonController
 
 	public function actionRunBlocks()
 	{
-		// debuglog(__METHOD__);
+		debuglog(__METHOD__);
 		set_time_limit(0);
 
 		$this->monitorApache();
