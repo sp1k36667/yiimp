@@ -79,7 +79,7 @@ class db_coins extends CActiveRecord
 		dborun("DELETE FROM balanceuser WHERE userid IN $ids_query");
 		dborun("DELETE FROM hashuser WHERE userid IN $ids_query");
 		dborun("DELETE FROM shares WHERE userid IN $ids_query");
-		dborun("DELETE FROM workers WHERE userid IN $ids_query");
+		// dborun("DELETE FROM workers WHERE userid IN $ids_query");
 		dborun("DELETE FROM payouts WHERE account_id IN $ids_query");
 
 		dborun("DELETE FROM blocks WHERE coin_id=".$coin->id);

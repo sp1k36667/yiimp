@@ -60,7 +60,7 @@ class DistcleanCommand extends CConsoleCommand
 		dborun("DELETE FROM balanceuser WHERE userid=".$user->id);
 		dborun("DELETE FROM hashuser WHERE userid=".$user->id);
 		dborun("DELETE FROM shares WHERE userid=".$user->id);
-		dborun("DELETE FROM workers WHERE userid=".$user->id);
+		// dborun("DELETE FROM workers WHERE userid=".$user->id);
 		dborun("DELETE FROM earnings WHERE userid=".$user->id);
 		dborun("DELETE FROM blocks WHERE userid=".$user->id);
 		dborun("DELETE FROM payouts WHERE account_id=".$user->id);
