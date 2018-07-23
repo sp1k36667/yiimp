@@ -22,7 +22,7 @@ function BackendCoinsUpdate()
 {
 	$debug = false;
 
-//	debuglog(__FUNCTION__);
+	// debuglog(__FUNCTION__);
 	$t1 = microtime(true);
 
 	$pool_rate = array();
@@ -32,7 +32,7 @@ function BackendCoinsUpdate()
 	$coins = getdbolist('db_coins', "installed");
 	foreach($coins as $coin)
 	{
-//		debuglog("doing $coin->name");
+		// debuglog("doing $coin->name");
 
 		$remote = new WalletRPC($coin);
 
@@ -173,9 +173,20 @@ function BackendCoinsUpdate()
 				$coin->auto_ready = ($coin->connections > 0);
 			}
 
-			else if ($coin->rpcencoding == 'SC'|| $coin->rpcencoding == 'SPACE')
+			else if ($coin->rpcencoding == 'SC')
 			{
 				$coin->reward = 300000 - $template['height'];
+				if($coin->reward < 30000) {
+					$coin->reward = 30000;
+				}
+			}
+
+			else if ($coin->rpcencoding == 'SPACE')
+			{
+				$coin->reward = 0.9*(60000 - ($template['height']-3)*0.2);
+				if($coin->reward < 6000) {
+					$coin->reward = 6000;
+				}
 			}
 
 			else if(strcasecmp($remote->error, 'method not found') == 0)
