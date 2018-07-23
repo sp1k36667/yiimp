@@ -521,7 +521,7 @@ class WalletRPC {
 				$info = $this->rpc->rpcget('/consensus');
 				$info['blocks'] = $info['height'];
 				$wallet_info = $this->rpc->rpcget('/wallet');
-				$info['balance'] = $hasting_to_amount($wallet_info['confirmedsiacoinbalance']);
+				$info['balance'] = $hasting_to_amount($wallet_info['confirmedspacecashbalance']);
 				// debuglog("balance " . json_encode($wallet_info));
 				$this->error = $this->rpc->error;
 				return $info;
@@ -593,7 +593,7 @@ class WalletRPC {
 				return $res;
 			case 'getbalance':
 				$wallet_info = $this->rpc->rpcget("/wallet");
-				$hastings = $wallet_info['confirmedsiacoinbalance'];
+				$hastings = $wallet_info['confirmedspacecashbalance'];
 				// TODO convert hastings to double
 				return $hasting_to_amount($hastings);
 				break;
