@@ -34,7 +34,7 @@ class HyperspaceRPC
 			CURLOPT_MAXREDIRS      => 10,
 			CURLOPT_HTTPHEADER     => array(
 				'Content-Type: application/json',
-				'User-Agent: Sia-Agent',
+				'User-Agent: Hyperspace-Agent',
 			),
 		);
 		curl_setopt_array($curl, $options);
