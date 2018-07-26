@@ -31,6 +31,11 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600)." hours";
 <div class="main-left-title">TOASTPOOL</div>
 <div class="main-left-inner">
 
+<ul style="color:red;">
+<li>Please note: do not mine to the same address on Sia and Hyperspace. </li>
+<li>The pool only supports mining to one coin per address.</li>
+</ul>
+
 <ul>
 <li>ToastPool is a mining pool for Sia and Sia forks.</li>
 <li>ToastPool is based on YiiMP's source code and is an open source project.</li>
