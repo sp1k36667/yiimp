@@ -454,6 +454,25 @@ class WalletRPC {
 					$txs[] = $tx;
 				}
 				return $txs;
+			case 'sendtoaddress':
+				$address = arraySafeVal($params, 0);
+				$amount = arraySafeVal($params, 1);
+				$value = $amount_to_hasting($amount);
+				$destinations = array();
+				$destination = array(
+					"value" => $value,
+					"unlockhash" => $address
+				);
+				$destinations[] = (object) $destination;
+				$outputs = json_encode($destinations);
+				debuglog("send many 2:" . $outputs);
+				$res = $this->rpc->rpcpost("/wallet/siacoins?outputs={$outputs}");
+				$this->error = $this->rpc->error;
+				debuglog("send many 3:" . json_encode($res));
+				if ($res && isset($res['transactionids'])) {
+					return end($res['transactionids']); // assume last is the real payout
+				}
+				return $res;
 			case 'sendmany':
 				$destinations = array();
 				$addresses = arraySafeVal($params, 0);
@@ -572,6 +591,25 @@ class WalletRPC {
 					$txs[] = $tx;
 				}
 				return $txs;
+			case 'sendtoaddress':
+				$address = arraySafeVal($params, 0);
+				$amount = arraySafeVal($params, 1);
+				$value = $amount_to_hasting($amount);
+				$destinations = array();
+				$destination = array(
+					"value" => $value,
+					"unlockhash" => $address
+				);
+				$destinations[] = (object) $destination;
+				$outputs = json_encode($destinations);
+				debuglog("send many 2:" . $outputs);
+				$res = $this->rpc->rpcpost("/wallet/spacecash?outputs={$outputs}");
+				$this->error = $this->rpc->error;
+				debuglog("send many 3:" . json_encode($res));
+				if ($res && isset($res['transactionids'])) {
+					return end($res['transactionids']); // assume last is the real payout
+				}
+				return $res;
 			case 'sendmany':
 				$destinations = array();
 				$addresses = arraySafeVal($params, 0);
