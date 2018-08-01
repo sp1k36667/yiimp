@@ -112,12 +112,12 @@ class db_coins extends CActiveRecord
 			$htmlOpts = array_merge(array('target'=>'_blank'), $htmlOptions);
 			return CHtml::link($label, $url, $htmlOpts);
 		}
-		else if ($this->symbol == 'SC' && isset($params['txid'])) {
+		else if ($this->symbol == 'SC') {
 			$url = 'https://siastats.info/navigator?search='.$params['txid'];
 			$htmlOpts = array_merge(array('target'=>'_blank'), $htmlOptions);
 			return CHtml::link($label, $url, $htmlOpts);
 		}
-		else if ($this->symbol == 'SPACE' && isset($params['txid'])) {
+		else if ($this->symbol == 'SPACE') {
 			$url = 'http://space-explorer.luxor.tech/hashes/'.$params['txid'];
 			$htmlOpts = array_merge(array('target'=>'_blank'), $htmlOptions);
 			return CHtml::link($label, $url, $htmlOpts);
