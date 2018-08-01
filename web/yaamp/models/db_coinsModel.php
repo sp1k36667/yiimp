@@ -113,7 +113,7 @@ class db_coins extends CActiveRecord
 			return CHtml::link($label, $url, $htmlOpts);
 		}
 		else if ($this->symbol == 'SC' && isset($params['txid'])) {
-			$url = 'https://siastats.info/navigator?search='.$params['txid'];
+			$url = 'http://space-explorer.luxor.tech/hashes/8d10f08d229c8c2a6960415d03ebdeb06bb430c91d10e1b4fa2b4c4eedd9a3b1020d8c5c14d9'.$params['txid'];
 			$htmlOpts = array_merge(array('target'=>'_blank'), $htmlOptions);
 			return CHtml::link($label, $url, $htmlOpts);
 		}
