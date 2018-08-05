@@ -42,11 +42,11 @@ echo <<<end
 <th data-sorter="text">PID</th>
 <th data-sorter="text">Client</th>
 <th data-sorter="text">Version</th>
-<th data-sorter="numeric">Hashrate</th>
+<!-- <th data-sorter="numeric">Hashrate</th> -->
 <th data-sorter="numeric">Diff</th>
 <th data-sorter="numeric">Shares</th>
-<th data-sorter="numeric">Bad</th>
-<th data-sorter="numeric">%</th>
+<!-- <th data-sorter="numeric">Bad</th> -->
+<!-- <th data-sorter="numeric">%</th> -->
 <th data-sorter="numeric">Found</th>
 <th data-sorter="text" width="30">Name</th>
 <th data-sorter="text"></th>
@@ -56,20 +56,21 @@ end;
 
 $workers = getdbolist('db_workers', "algo=:algo order by name", array(':algo'=>$algo));
 
-$total_rate = 0.0;
-foreach($workers as $worker)
-{
-	$total_rate += yaamp_worker_rate($worker->id);
-}
+// $total_rate = 0.0;
+// foreach($workers as $worker)
+// {
+// 	$total_rate += yaamp_worker_rate($worker->id);
+// }
 
 foreach($workers as $worker)
 {
-	$user_rate = yaamp_worker_rate($worker->id);
-	$percent = 0.0;
-	if ($total_rate) $percent = (100.0 * $user_rate) / $total_rate;
-	$user_bad = yaamp_worker_rate_bad($worker->id);
-	$pct_bad = ($user_rate+$user_bad)? round($user_bad*100/($user_rate+$user_bad), 3): 0;
-	$user_rate_h = $user_rate ? Itoa2($user_rate).'H' : '-';
+	// $user_rate = yaamp_worker_rate($worker->id);
+	// $percent = 0.0;
+	// if ($total_rate) $percent = (100.0 * $user_rate) / $total_rate;
+	// $user_bad = yaamp_worker_rate_bad($worker->id);
+	// $user_bad = 0;
+	// $pct_bad = ($user_rate+$user_bad)? round($user_bad*100/($user_rate+$user_bad), 3): 0;
+	// $user_rate_h = $user_rate ? Itoa2($user_rate).'H' : '-';
 
 	$name = $worker->worker;
 	$user = $coin = NULL;
@@ -97,7 +98,7 @@ foreach($workers as $worker)
 	echo "<td>$worker->pid</td>";
 	echo "<td title='$worker->ip'>$dns</td>";
 	echo "<td>$worker->version</td>";
-	echo "<td data=\"$user_rate\">$user_rate_h</td>";
+	// echo "<td data=\"$user_rate\">$user_rate_h</td>";
 	echo "<td>$worker->difficulty</td>";
 
 	$shares = dboscalar("SELECT COUNT(id) as shares FROM shares WHERE workerid=:worker AND algo=:algo", array(
@@ -106,14 +107,14 @@ foreach($workers as $worker)
 	));
 	echo "<td>$shares</td>";
 
-	echo "<td>";
-	if ($user_bad > 0) {
-		if ($pct_bad > 50)
-			echo "<b> {$pct_bad}%</b>";
-		else
-			echo " {$pct_bad}%";
-	}
-	echo "</td>";
+	// echo "<td>";
+	// if ($user_bad > 0) {
+	// 	if ($pct_bad > 50)
+	// 		echo "<b> {$pct_bad}%</b>";
+	// 	else
+	// 		echo " {$pct_bad}%";
+	// }
+	// echo "</td>";
 
 	$worker_blocs = dboscalar("SELECT COUNT(id) as blocs FROM blocks WHERE workerid=:worker AND algo=:algo", array(
 		':worker'=> $worker->id,
@@ -124,7 +125,7 @@ foreach($workers as $worker)
 		':user'=> $worker->userid,
 		':algo'=> $algo
 	));
-	echo '<td>'.number_format($percent,1,'.','').'%</td>';
+	// echo '<td>'.number_format($percent,1,'.','').'%</td>';
 
 	echo '<td>'.$worker_blocs.' / '.$user_blocs.'</td>';
 	echo '<td>'.$name.'</td>';
