@@ -44,7 +44,7 @@ echo <<<end
 <th data-sorter="text">Version</th>
 <!-- <th data-sorter="numeric">Hashrate</th> -->
 <th data-sorter="numeric">Diff</th>
-<th data-sorter="numeric">Shares</th>
+<!-- <th data-sorter="numeric">Shares</th> -->
 <!-- <th data-sorter="numeric">Bad</th> -->
 <!-- <th data-sorter="numeric">%</th> -->
 <th data-sorter="numeric">Found</th>
@@ -101,11 +101,11 @@ foreach($workers as $worker)
 	// echo "<td data=\"$user_rate\">$user_rate_h</td>";
 	echo "<td>$worker->difficulty</td>";
 
-	$shares = dboscalar("SELECT COUNT(id) as shares FROM shares WHERE workerid=:worker AND algo=:algo", array(
-		':worker'=> $worker->id,
-		':algo'=> $algo
-	));
-	echo "<td>$shares</td>";
+	// $shares = dboscalar("SELECT COUNT(id) as shares FROM shares WHERE workerid=:worker AND algo=:algo", array(
+	// 	':worker'=> $worker->id,
+	// 	':algo'=> $algo
+	// ));
+	// echo "<td>$shares</td>";
 
 	// echo "<td>";
 	// if ($user_bad > 0) {

@@ -35,7 +35,7 @@ $(function()
 	main_refresh();
 });
 
-var main_delay=30000;
+var main_delay=120000;
 var main_timeout;
 
 function main_ready(data)
