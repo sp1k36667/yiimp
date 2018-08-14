@@ -298,7 +298,7 @@ function BackendBlocksUpdate($coinid = NULL)
 		}
 
 		if(($coin->rpcencoding == 'SC' || $coin->rpcencoding == 'SPACE') && $block->category == 'orphan') {
-			if ($coin->enable && (time() - $block->time) < 3600) {
+			if ($coin->enable && (time() - $block->time) < 3600*24) {
 				$blockext = $remote->getblock($block->blockhash);
 				if (!$blockext || !isset($blockext["parentid"]) || !isset($blockext["minerpayouts"])) {
 					continue; // keep orphan
