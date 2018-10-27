@@ -180,7 +180,7 @@ function BackendBlockFind1($coinid = NULL)
 		$block = $remote->getblock($db_block->blockhash);
 		// debuglog("block is: {$block->blockhash}, height: {$db_block->height}, parentid: {$block->parentid}");
 		$block_age = time() - $db_block->time;
-		if($coin->rpcencoding == 'SC' || $coin->rpcencoding == 'SPACE') {
+		if($coin->rpcencoding == 'SC' || $coin->rpcencoding == 'XSC' || $coin->rpcencoding == 'SPACE') {
 			if (!$block || !isset($block["parentid"]) || !isset($block["minerpayouts"])) {
 				$db_block->amount = 0;
 				$db_block->save();
@@ -274,7 +274,7 @@ function BackendBlocksUpdate($coinid = NULL)
 		}
 
 		$remote = new WalletRPC($coin);
-		if(($coin->rpcencoding == 'SC' || $coin->rpcencoding == 'SPACE') && $block->category == 'immature') {
+		if(($coin->rpcencoding == 'SC' ||  $coin->rpcencoding == 'XSC' || $coin->rpcencoding == 'SPACE') && $block->category == 'immature') {
 			// checkout is it orphan by getblocks
 			$remote_block = $remote->getblock($block->blockhash);
 			if (!$remote_block || !isset($remote_block["parentid"]) || !isset($remote_block["minerpayouts"])) {
@@ -297,7 +297,7 @@ function BackendBlocksUpdate($coinid = NULL)
 			continue;
 		}
 
-		if(($coin->rpcencoding == 'SC' || $coin->rpcencoding == 'SPACE') && $block->category == 'orphan') {
+		if(($coin->rpcencoding == 'SC' || $coin->rpcencoding == 'XSC' || $coin->rpcencoding == 'SPACE') && $block->category == 'orphan') {
 			if ($coin->enable && (time() - $block->time) < 3600*24) {
 				$blockext = $remote->getblock($block->blockhash);
 				if (!$blockext || !isset($blockext["parentid"]) || !isset($blockext["minerpayouts"])) {
