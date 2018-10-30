@@ -122,13 +122,15 @@ class db_coins extends CActiveRecord
 			$htmlOpts = array_merge(array('target'=>'_blank'), $htmlOptions);
 			return CHtml::link($label, $url, $htmlOpts);
 		}
-		else if ($this->symbol == 'SPACE' && isset($params['txid'])) {
-			$url = 'http://space-explorer.luxor.tech/hashes/'.$params['txid'];
+		else if (($this->symbol == 'XSC' || $this->symbol == 'SPACE') && isset($params['txid'])) {
+			$url = 'https://hyperstats.info/navigator?search='.$params['txid'];
+			#$url = 'http://space-explorer.luxor.tech/hashes/'.$params['txid'];
 			$htmlOpts = array_merge(array('target'=>'_blank'), $htmlOptions);
 			return CHtml::link($label, $url, $htmlOpts);
 		}
-		else if ($this->symbol == 'SPACE' && isset($params['hash'])) {
-			$url = 'http://space-explorer.luxor.tech/hashes/'.$params['hash'];
+		else if (($this->symbol == 'XSC' || $this->symbol == 'SPACE') && isset($params['hash'])) {
+			$url = 'https://hyperstats.info/navigator?search='.$params['hash'];
+			#$url = 'http://space-explorer.luxor.tech/hashes/'.$params['hash'];
 			$htmlOpts = array_merge(array('target'=>'_blank'), $htmlOptions);
 			return CHtml::link($label, $url, $htmlOpts);
 		}

@@ -181,7 +181,7 @@ function BackendCoinsUpdate()
 				}
 			}
 
-			else if ($coin->rpcencoding == 'SPACE')
+			else if ($coin->rpcencoding == 'XSC' || $coin->rpcencoding == 'SPACE')
 			{
 				$coin->reward = 0.9*(60000 - ($template['height']-3)*0.2);
 				if($coin->reward < 6000) {
@@ -263,7 +263,7 @@ function BackendCoinsUpdate()
 			$coin->last_network_found = time();
 		}
 
-		if ($coin->rpcencoding == 'SC'|| $coin->rpcencoding == 'SPACE') {
+		if ($coin->rpcencoding == 'SC' || $coin->rpcencoding == 'XSC' || $coin->rpcencoding == 'SPACE') {
 			$coin->version = $remote->getversion();
 		} else {
 			$coin->version = substr($info['version'], 0, 32);
