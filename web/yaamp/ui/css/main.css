@@ -90,6 +90,10 @@ hr
 	left: 0px;
 	z-index: 8;
 	height: 40px;
+	color: white;
+	background-color: black;
+	/*
+	background-color: #b265c5;
 	color: #aaa;
 
 	background-image: url(/images/base/top_header.png);
@@ -97,6 +101,7 @@ hr
 	
 	-webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, .25);
 	box-shadow: 0 2px 3px rgba(0, 0, 0, .25);
+	*/
 }
 
 .page .tabmenu-inner
@@ -110,7 +115,10 @@ hr
 {
 	text-decoration: none;
 	padding: 10px;
+	/*
 	color: #aaa;
+	*/
+	color: white;
 }
 
 .page .tabmenu-inner .selected
