@@ -14,7 +14,7 @@ $height = '240px';
 $min_payout = floatval(YAAMP_PAYMENTS_MINI);
 $min_sunday = $min_payout/10;
 
-if YAAMP_PAYMENTS_FREQ / 3600 == 1 {
+if ((YAAMP_PAYMENTS_FREQ / 3600) == 1) {
 	$payout_freq = "hour";
 } else {
 	$payout_freq = (YAAMP_PAYMENTS_FREQ / 3600)." hours";
