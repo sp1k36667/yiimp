@@ -47,6 +47,7 @@ if ((YAAMP_PAYMENTS_FREQ / 3600) == 1) {
 
 </ul>
 </div>
+</div>
 
 <!--
 <ul>
@@ -67,37 +68,37 @@ if ((YAAMP_PAYMENTS_FREQ / 3600) == 1) {
 
 <li>
 <b>US East: </b><br/>
-<p class="main-left-box">
+<p class="stratum-server-info">
 Space Cash: stratum+tcp://us-east.toastpool.com:6666
 </p>
-<p class="main-left-box">
+<p class="stratum-server-info">
 Sia: stratum+tcp://us-east.toastpool.com:3333
 </p>
 </li>
 
 <li>
 <b>US West: </b><br/>
-<p class="main-left-box">
+<p class="stratum-server-info">
 Space Cash: stratum+tcp://us-west.toastpool.com:6666
 </p>
-<p class="main-left-box">
+<p class="stratum-server-info">
 Sia: stratum+tcp://us-west.toastpool.com:3333
 </p>
 </li>
 
 <li>
 <b>Asia (non-China): </b><br/>
-<p class="main-left-box">
+<p class="stratum-server-info">
 Space Cash: stratum+tcp://asia.toastpool.com:6666
 </p>
-<p class="main-left-box">
+<p class="stratum-server-info">
 Sia: stratum+tcp://asia.toastpool.com:3333
 </p>
 </li>
 
 <li>
 <b>China: </b><br/>
-<p class="main-left-box">
+<p class="stratum-server-info">
 Space Cash: stratum+tcp://china.toastpool.com:6666
 </p>
 <!--
@@ -114,7 +115,7 @@ Sia: stratum+tcp://china.toastpool.com:3333
 <br>
 
 </ul>
-</div><br>
+</div></div><br>
 
 <!--  -->
 
