@@ -33,20 +33,20 @@ if ((YAAMP_PAYMENTS_FREQ / 3600) == 1) {
 <!--  -->
 
 <div class="main-left-box">
-<div class="main-left-title">TOASTPOOL</div>
+<div class="main-left-title">Welcome to ToastPool!</div>
 <div class="main-left-inner">
 
 
 <ul>
-<li>ToastPool is a mining pool for Hyperspace and Sia.</li>
+<li>ToastPool is a mining pool for Hyperspace and Sia featuring <b>1.5% PPS</b></li>
 <li>No registration is required, we do payouts in the currency you mine. Use your wallet address as the username.</li>
 <li>&nbsp;</li>
 <li>Payouts are made automatically every <?= $payout_freq ?> for all balances above <b><?= $min_payout ?></b>, or <b><?= $min_sunday ?></b> on Sunday.</li>
-<li>The fee is <b>1.5% PPS</b>.</li>
 
 <br/>
 
 </ul>
+</div>
 
 <!--
 <ul>
@@ -60,44 +60,44 @@ if ((YAAMP_PAYMENTS_FREQ / 3600) == 1) {
 <!--  -->
 
 <div class="main-left-box">
-<div class="main-left-title">STRATUM SERVERS</div>
+<div class="main-left-title">Start Mining - Here Are Our Stratum Servers</div>
 <div class="main-left-inner">
 
 <ul>
 
 <li>
 <b>US East: </b><br/>
-<p class="main-left-box" style='padding: 3px; font-size: .8em; background-color: #ffffee; font-family: monospace;'>
+<p class="main-left-box">
 Space Cash: stratum+tcp://us-east.toastpool.com:6666
 </p>
-<p class="main-left-box" style='padding: 3px; font-size: .8em; background-color: #ffffee; font-family: monospace;'>
+<p class="main-left-box">
 Sia: stratum+tcp://us-east.toastpool.com:3333
 </p>
 </li>
 
 <li>
 <b>US West: </b><br/>
-<p class="main-left-box" style='padding: 3px; font-size: .8em; background-color: #ffffee; font-family: monospace;'>
+<p class="main-left-box">
 Space Cash: stratum+tcp://us-west.toastpool.com:6666
 </p>
-<p class="main-left-box" style='padding: 3px; font-size: .8em; background-color: #ffffee; font-family: monospace;'>
+<p class="main-left-box">
 Sia: stratum+tcp://us-west.toastpool.com:3333
 </p>
 </li>
 
 <li>
 <b>Asia (non-China): </b><br/>
-<p class="main-left-box" style='padding: 3px; font-size: .8em; background-color: #ffffee; font-family: monospace;'>
+<p class="main-left-box">
 Space Cash: stratum+tcp://asia.toastpool.com:6666
 </p>
-<p class="main-left-box" style='padding: 3px; font-size: .8em; background-color: #ffffee; font-family: monospace;'>
+<p class="main-left-box">
 Sia: stratum+tcp://asia.toastpool.com:3333
 </p>
 </li>
 
 <li>
 <b>China: </b><br/>
-<p class="main-left-box" style='padding: 3px; font-size: .8em; background-color: #ffffee; font-family: monospace;'>
+<p class="main-left-box">
 Space Cash: stratum+tcp://china.toastpool.com:6666
 </p>
 <!--
@@ -114,7 +114,7 @@ Sia: stratum+tcp://china.toastpool.com:3333
 <br>
 
 </ul>
-</div></div><br>
+</div><br>
 
 <!--  -->
 
