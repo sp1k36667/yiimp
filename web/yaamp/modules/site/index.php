@@ -48,12 +48,14 @@ if ((YAAMP_PAYMENTS_FREQ / 3600) == 1) {
 
 </ul>
 
+<!--
 <ul>
 <li>Please note: do not mine to the same address on Sia and Hyperspace. </li>
 <li>The pool only supports mining to one coin per address.</li>
 </ul>
 </div></div>
 <br/>
+-->
 
 <!--  -->
 
