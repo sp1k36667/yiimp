@@ -64,6 +64,26 @@ if ((YAAMP_PAYMENTS_FREQ / 3600) == 1) {
 <ul>
 
 <li>
+<b>US East: </b><br/>
+<p class="main-left-box" style='padding: 3px; font-size: .8em; background-color: #ffffee; font-family: monospace;'>
+For spacecash: stratum+tcp://us-east.toastpool.com:6666
+</p>
+<p class="main-left-box" style='padding: 3px; font-size: .8em; background-color: #ffffee; font-family: monospace;'>
+For sia: stratum+tcp://us-east.toastpool.com:3333
+</p>
+</li>
+
+<li>
+<b>US West: </b><br/>
+<p class="main-left-box" style='padding: 3px; font-size: .8em; background-color: #ffffee; font-family: monospace;'>
+For spacecash: stratum+tcp://us-west.toastpool.com:6666
+</p>
+<p class="main-left-box" style='padding: 3px; font-size: .8em; background-color: #ffffee; font-family: monospace;'>
+For sia: stratum+tcp://us-west.toastpool.com:3333
+</p>
+</li>
+
+<li>
 <b>China: </b><br/>
 <p class="main-left-box" style='padding: 3px; font-size: .8em; background-color: #ffffee; font-family: monospace;'>
 For spacecash: stratum+tcp://china.toastpool.com:6666
@@ -82,17 +102,6 @@ For spacecash: stratum+tcp://asia.toastpool.com:6666
 For sia: stratum+tcp://asia.toastpool.com:3333
 </p>
 </li>
-
-<li>
-<b>US: </b><br/>
-<p class="main-left-box" style='padding: 3px; font-size: .8em; background-color: #ffffee; font-family: monospace;'>
-For spacecash: stratum+tcp://us-east.toastpool.com:6666
-</p>
-<p class="main-left-box" style='padding: 3px; font-size: .8em; background-color: #ffffee; font-family: monospace;'>
-For sia: stratum+tcp://us-east.toastpool.com:3333
-</p>
-</li>
-
 
 <li>Make sure you specify a valid wallet address as your username. </li>
 <li>Passwords are not used by the server and can be empty or something arbitrary.</li>
