@@ -178,7 +178,8 @@ hr
 .main-left-title
 {
 	padding: 8px;
-	background-color: #e5e5e5;
+	/*background-color: #e5e5e5;*/
+	background-color: #efefef;
 	font-weight: bold;
 }
 

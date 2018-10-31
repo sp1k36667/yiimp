@@ -118,15 +118,18 @@ Sia: stratum+tcp://china.toastpool.com:3333
 
 <!--  -->
 
+<!--
 <div class="main-left-box">
 <div class="main-left-title">LINKS</div>
 <div class="main-left-inner">
 
 <ul>
+-->
 
 <!--<li><b>BitcoinTalk</b> - <a href='https://bitcointalk.org/index.php?topic=508786.0' target=_blank >https://bitcointalk.org/index.php?topic=508786.0</a></li>-->
 <!--<li><b>IRC</b> - <a href='http://webchat.freenode.net/?channels=#yiimp' target=_blank >http://webchat.freenode.net/?channels=#yiimp</a></li>-->
 
+<!--
 <li><b>API</b> - <a href='/site/api'>http://<?= YAAMP_SITE_URL ?>/site/api</a></li>
 <li><b>Difficulty</b> - <a href='/site/diff'>http://<?= YAAMP_SITE_URL ?>/site/diff</a></li>
 <?php if (YIIMP_PUBLIC_BENCHMARK): ?>
@@ -141,6 +144,7 @@ Sia: stratum+tcp://china.toastpool.com:3333
 
 </ul>
 </div></div><br>
+-->
 
 <!--
 <a class="twitter-timeline" href="https://twitter.com/hashtag/YAAMP" data-widget-id="617405893039292417" data-chrome="transparent" height="450px" data-tweet-limit="3" data-aria-polite="polite">Tweets about #YAAMP</a>
