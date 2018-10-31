@@ -231,6 +231,14 @@ hr
 
 /* ---------------------------------------------- */
 
+.stratum-server-info .server-type
+{
+	width: 100px;
+	display: inline-block;
+}
+
+/* ---------------------------------------------- */
+
 .red
 {
 	color: red;
