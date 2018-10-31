@@ -74,13 +74,19 @@ foreach($algos as $item)
 
 	$coinsym = '';
 	$coins = getdbocount('db_coins', "enable and visible and auto_ready and algo=:algo", array(':algo'=>$algo));
-		
+
+	/*
 	if ($coins == 1) {
 		// If we only mine one coin, show it...
 		$coin = getdbosql('db_coins', "enable and visible and auto_ready and algo=:algo", array(':algo'=>$algo));
 		$coinsym = empty($coin->symbol2) ? $coin->symbol : $coin->symbol2;
 		$coinsym = '<span title="'.$coin->name.'">'.$coinsym.'</a>';
 	}
+	*/
+	// used to aggregate by default, but we don't want to aggregate algs
+	$coin = getdbosql('db_coins', "enable and visible and auto_ready and algo=:algo", array(':algo'=>$algo));
+	$coinsym = empty($coin->symbol2) ? $coin->symbol : $coin->symbol2;
+	$coinsym = '<span title="'.$coin->name.'">'.$coinsym.'</a>';
 
 	if (!$coins) continue;
 
