@@ -14,7 +14,12 @@ $height = '240px';
 $min_payout = floatval(YAAMP_PAYMENTS_MINI);
 $min_sunday = $min_payout/10;
 
-$payout_freq = (YAAMP_PAYMENTS_FREQ / 3600)." hours";
+if YAAMP_PAYMENTS_FREQ / 3600 == 1 {
+	$payout_freq = "hour";
+} else {
+	$payout_freq = (YAAMP_PAYMENTS_FREQ / 3600)." hours";
+}
+
 ?>
 
 <div id='resume_update_button' style='color: #444; background-color: #ffd; border: 1px solid #eea;
@@ -31,14 +36,9 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600)." hours";
 <div class="main-left-title">TOASTPOOL</div>
 <div class="main-left-inner">
 
-<ul style="color:red;">
-<li>Please note: do not mine to the same address on Sia and Hyperspace. </li>
-<li>The pool only supports mining to one coin per address.</li>
-</ul>
 
 <ul>
-<li>ToastPool is a mining pool for Sia and Sia forks.</li>
-<li>ToastPool is based on YiiMP's source code and is an open source project.</li>
+<li>ToastPool is a mining pool for Sia and Hyperspace.</li>
 <li>No registration is required, we do payouts in the currency you mine. Use your wallet address as the username.</li>
 <li>&nbsp;</li>
 <li>Payouts are made automatically every <?= $payout_freq ?> for all balances above <b><?= $min_payout ?></b>, or <b><?= $min_sunday ?></b> on Sunday.</li>
@@ -46,6 +46,11 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600)." hours";
 
 <br/>
 
+</ul>
+
+<ul>
+<li>Please note: do not mine to the same address on Sia and Hyperspace. </li>
+<li>The pool only supports mining to one coin per address.</li>
 </ul>
 </div></div>
 <br/>
