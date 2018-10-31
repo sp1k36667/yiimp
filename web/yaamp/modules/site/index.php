@@ -69,24 +69,12 @@ if ((YAAMP_PAYMENTS_FREQ / 3600) == 1) {
 
 <li>
 <b>US East: </b><br/>
-<table>
-  <tr>
-    <td>
-      <p class="stratum-server-info">
-        Space Cash
-      </p>
-    </td>
-    <td>stratum+tcp://us-east.toastpool.com:6666</td>
-  </tr>
-  <tr>
-    <td>
-      <p class="stratum-server-info">
-        Sia
-      </p>
-    </td>
-    <td>stratum+tcp://us-east.toastpool.com:3333</td>
-  </tr>
-</table>
+<p class="stratum-server-info">
+<span style="width: 100px;">Space Cash:</span> stratum+tcp://us-east.toastpool.com:6666
+</p>
+<p class="stratum-server-info">
+<span style="width: 100px;">Sia:</span> stratum+tcp://us-east.toastpool.com:3333
+</p>
 </li>
 
 <li>
