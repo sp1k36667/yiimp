@@ -38,7 +38,7 @@ if ((YAAMP_PAYMENTS_FREQ / 3600) == 1) {
 
 
 <ul>
-<li>ToastPool is a mining pool for Hyperspace and Sia featuring <b>1.5% PPS</b>.</li>
+<li>ToastPool is a mining pool for Hyperspace featuring <b>1.5% PPS</b>.</li>
 <li>No registration is required, we do payouts in the currency you mine. Use your wallet address as the username.</li>
 <li>&nbsp;</li>
 <li>Payouts are made automatically every <?= $payout_freq ?> for all balances above <b><?= $min_payout ?></b>, or <b><?= $min_sunday ?></b> on Sunday.</li>
@@ -72,9 +72,6 @@ if ((YAAMP_PAYMENTS_FREQ / 3600) == 1) {
 <p class="stratum-server-info">
 <span class="server-type">Space Cash:</span> stratum+tcp://us-east.toastpool.com:6666
 </p>
-<p class="stratum-server-info">
-<span class="server-type">Sia:</span> stratum+tcp://us-east.toastpool.com:3333
-</p>
 </li>
 
 <li>
@@ -82,18 +79,12 @@ if ((YAAMP_PAYMENTS_FREQ / 3600) == 1) {
 <p class="stratum-server-info">
 <span class="server-type">Space Cash:</span> stratum+tcp://us-west.toastpool.com:6666
 </p>
-<p class="stratum-server-info">
-<span class="server-type">Sia:</span> stratum+tcp://us-west.toastpool.com:3333
-</p>
 </li>
 
 <li>
 <b>Asia (non-China): </b><br/>
 <p class="stratum-server-info">
 <span class="server-type">Space Cash:</span> stratum+tcp://asia.toastpool.com:6666
-</p>
-<p class="stratum-server-info">
-<span class="server-type">Sia:</span> stratum+tcp://asia.toastpool.com:3333
 </p>
 </li>
 
