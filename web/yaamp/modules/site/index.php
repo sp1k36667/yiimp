@@ -38,7 +38,7 @@ if ((YAAMP_PAYMENTS_FREQ / 3600) == 1) {
 
 
 <ul>
-<li>ToastPool is a mining pool for Hyperspace featuring <b>1.5% PPS</b>.</li>
+<li>ToastPool is a mining pool for Hyperspace featuring <b>2% PPS</b>.</li>
 <li>No registration is required, we do payouts in the currency you mine. Use your wallet address as the username.</li>
 <li>&nbsp;</li>
 <li>Payouts are made automatically every <?= $payout_freq ?> for all balances above <b><?= $min_payout ?></b>, or <b><?= $min_sunday ?></b> on Sunday.</li>
