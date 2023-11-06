@@ -307,6 +307,7 @@ YAAMP_JOB_TEMPLATE *coind_create_template(YAAMP_COIND *coind)
 	strcpy(templ->prevhash_hex, prev ? prev : "");
 	const char *flags = json_get_string(json_coinbaseaux, "flags");
 	strcpy(templ->flags, flags ? flags : "");
+	strcpy(templ->priceinfo, "");
 
 	// LBC Claim Tree (with wallet gbt patch)
 	const char *claim = json_get_string(json_result, "claimtrie");
@@ -331,6 +332,25 @@ YAAMP_JOB_TEMPLATE *coind_create_template(YAAMP_COIND *coind)
 			strcpy(templ->claim_hex, claim);
 			debuglog("claim_hex: %s\n", templ->claim_hex);
 		}
+	}
+	else if (strcmp(coind->symbol, "BITC") == 0) {
+		if (strlen(json_get_string(json_result, "priceinfo")) < 1000) {
+			templ->needpriceinfo = json_get_bool(json_result, "needpriceinfo");
+            if (templ->needpriceinfo)
+				strcpy(templ->priceinfo, json_get_string(json_result, "priceinfo"));
+		}
+	}
+
+	const char *sc_root = json_get_string(json_result, "stateroot");
+	const char *sc_utxo = json_get_string(json_result, "utxoroot");
+	if (sc_root && sc_utxo) {
+		// LUX Smart Contracts, 144-bytes block headers
+		strcpy(&templ->extradata_hex[ 0], sc_root); // 32-bytes hash (64 in hexa)
+		strcpy(&templ->extradata_hex[64], sc_utxo); // 32-bytes hash too
+
+		// same weird byte order as previousblockhash field
+		ser_string_be2(sc_root, &templ->extradata_be[ 0], 8);
+		ser_string_be2(sc_utxo, &templ->extradata_be[64], 8);
 	}
 
 	if (strcmp(coind->rpcencoding, "DCR") == 0) {

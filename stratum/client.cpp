@@ -48,8 +48,11 @@ bool client_subscribe(YAAMP_CLIENT *client, json_value *json_params)
 		if (json_params->u.array.values[0]->u.string.ptr)
 			strncpy(client->version, json_params->u.array.values[0]->u.string.ptr, 1023);
 
-		if(strstr(client->version, "NiceHash") || strstr(client->version, "proxy") || strstr(client->version, "/3."))
-			client->reconnectable = false;
+		if (strstr(client->version, "NiceHash"))
+      client->difficulty_actual = g_stratum_nicehash_difficulty;
+
+		if(strstr(client->version, "proxy") || strstr(client->version, "/3."))
+      client->reconnectable = false;
 
 		if(strstr(client->version, "ccminer")) client->stats = true;
 		if(strstr(client->version, "cpuminer-multi")) client->stats = true;
@@ -202,7 +205,7 @@ bool client_authorize(YAAMP_CLIENT *client, json_value *json_params)
 		return false;
 	}
 
-	if(json_params->u.array.length>1)
+	if(json_params->u.array.length>1 && json_params->u.array.values[1]->u.string.ptr)
 		strncpy(client->password, json_params->u.array.values[1]->u.string.ptr, 1023);
 
 	if (g_list_client.count >= g_stratum_max_cons) {
@@ -210,7 +213,7 @@ bool client_authorize(YAAMP_CLIENT *client, json_value *json_params)
 		return false;
 	}
 
-	if(json_params->u.array.length>0)
+	if(json_params->u.array.length>0 && json_params->u.array.values[0]->u.string.ptr)
 	{
 		strncpy(client->username, json_params->u.array.values[0]->u.string.ptr, 1023);
 
@@ -227,11 +230,6 @@ bool client_authorize(YAAMP_CLIENT *client, json_value *json_params)
 		} else if (len > MAX_ADDRESS_LEN) {
 			return false;
 		}
-	}
-
-	if (!is_base58(client->username)) {
-		clientlog(client, "bad mining address %s", client->username);
-		return false;
 	}
 
 	bool reset = client_initialize_multialgo(client);
@@ -261,19 +259,6 @@ bool client_authorize(YAAMP_CLIENT *client, json_value *json_params)
 		CommonUnlock(&g_db_mutex);
 	}
 
-	// when auto exchange is disabled, only authorize good wallet address...
-	if (!g_autoexchange && !client_validate_user_address(client)) {
-
-		clientlog(client, "bad mining address %s", client->username);
-		client_send_result(client, "false");
-
-		CommonLock(&g_db_mutex);
-		db_clear_worker(g_db, client);
-		CommonUnlock(&g_db_mutex);
-
-		return false;
-	}
-
 	client_send_result(client, "true");
 	client_send_difficulty(client, client->difficulty_actual);
 
@@ -291,7 +276,7 @@ bool client_authorize(YAAMP_CLIENT *client, json_value *json_params)
 bool client_update_block(YAAMP_CLIENT *client, json_value *json_params)
 {
 	// password, id, block hash
-	if(json_params->u.array.length < 3)
+	if(json_params->u.array.length < 3 || !json_params->u.array.values[0]->u.string.ptr)
 	{
 		clientlog(client, "update block, bad params");
 		return false;
@@ -671,4 +656,3 @@ void *client_thread(void *p)
 
 	pthread_exit(NULL);
 }
-

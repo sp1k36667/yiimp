@@ -24,9 +24,13 @@ struct YAAMP_JOB_TEMPLATE
 	int created;
 	char flags[64];
 
-	char prevhash_hex[1024];
-	char prevhash_be[1024];
+	char prevhash_hex[512];
+	char prevhash_be[512];
 
+	char extradata_hex[512];
+	char extradata_be[512];
+
+	// todo: can use extra field
 	char claim_hex[128];
 	char claim_be[128];
 
@@ -47,6 +51,9 @@ struct YAAMP_JOB_TEMPLATE
 
 	char coinb1[4*1024];
 	char coinb2[4*1024];
+	char coinforsubmitb1[4*1024];
+	char coinforsubmitb2[4*1024];
+	bool isbitcash;
 
 	char header[256];
 
@@ -57,6 +64,9 @@ struct YAAMP_JOB_TEMPLATE
 
 	int auxs_size;
 	YAAMP_COIND_AUX *auxs[MAX_AUXS];
+	
+	bool needpriceinfo;
+	char priceinfo[1024];	
 };
 
 #define YAAMP_JOB_MAXSUBIDS		200
